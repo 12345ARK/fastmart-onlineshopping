@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Fresh Fruits - FastMart</title>
+    <style>
+        .filter-pill {
+            background: var(--light-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+            padding: 8px 22px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            float:right;
+        }
+ 
+        .filter-pill:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-1px);
+        }
+
+        .nav-menu{
+            border: none;
+            background: none;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+    <nav class="navbar">
+        <div class="nav-wrapper">
+            <!-- Logo -->
+            <div class="nav-logo" onclick="window.location.href='index.html'">
+                <i class="fas fa-shopping-bag"></i>
+                <span>FastMart</span>
+            </div>
+
+            <!-- Desktop Search -->
+            <div class="search-wrapper desktop-search">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search fruits...">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <div class="search-results-dropdown" id="searchResults">
+                    <div id="resultsList"></div>
+                </div>
+            </div>
+
+            <!-- Desktop Menu -->
+            <ul class="nav-menu">
+                <button class="nav-menu" onclick="history.back(-1)">⬅ go back</button>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#groceries">Groceries</a></li>
+                <li><a href="index.html#vegetables">Vegetables</a></li>
+                <li><a href="index.html#fruits" class="active">Fruits</a></li>
+            </ul>
+
+            <!-- Icons -->
+            <div class="nav-icons">
+                <button class="icon-btn mobile-search-icon" id="mobileSearchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="icon-btn" id="cartBtn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge" id="cartCount">0</span>
+                </button>
+                <button class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Search Area -->
+        <div class="mobile-search-wrapper" id="mobileSearchWrapper">
+            <input type="text" id="mobileSearchInput" class="mobile-search-input" placeholder="Search fruits...">
+            <button class="mobile-search-submit">
+                <i class="fas fa-search"></i>
+            </button>
+            <button id="mobileSearchClose" class="mobile-search-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Search Results -->
+        <div class="mobile-search-results" id="mobileSearchResults">
+            <div id="mobileResultsList"></div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-menu-link">Home</a>
+            <a href="index.html#groceries" class="mobile-menu-link">Groceries</a>
+            <a href="index.html#vegetables" class="mobile-menu-link">Vegetables</a>
+            <a href="index.html#fruits" class="mobile-menu-link">Fruits</a>
+            <button class="filter-pill" onclick="history.back(-1)">⬅ go back</button>
+        </div>
+    </nav>
+
+
+    <!-- =========================
+         FRUITS CATALOGUE
+    ========================= -->
+    <div class="containerA my-4">
+        <div class="heading text-center my-4">
+            <h2
+                style="background: linear-gradient(135deg, #0f172a 0%, #2563eb 35%, #7c3aed 70%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700;">
+                Fresh Fruits Orchard</h2>
+        </div>
+
+        <div class="box d-flex flex-wrap justify-content-center">
+
+            <!-- Fruit 1: Apple -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2wDXfk9-zgVxSk-z-MqjgIA7jwx3fHBZ91J-JWUaPIg&s=10"
+                        alt="Apple">
+                </div>
+                <div class="details">
+                    <h3>Apple</h3>
+                    <p class="price">₹120/kg</p>
+                </div>
+            </div>
+
+            <!-- Fruit 2: Banana -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8KwARHg9glIy29RMCS9x2h-tN0vG84FZevfey8--ckA&s=10"
+                        alt="Banana">
+                </div>
+                <div class="details">
+                    <h3>Banana</h3>
+                    <p class="price">₹60/kg</p>
+                </div>
+            </div>
+
+            <!-- Fruit 3: Mango -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2HGhdyMySaxcTlACSo7-bDFk8WVUXaH1raChHF-Swug&s=10"
+                        alt="Mango">
+                </div>
+                <div class="details">
+                    <h3>Mango</h3>
+                    <p class="price">₹150/kg</p>
+                </div>
+            </div>
+
+            <!-- Fruit 4: Grapes -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSh8i9lqvcPmxGg9W-uek87NZhsiQiqFNSMMUphixtsXw&s=10"
+                        alt="Grapes">
+                </div>
+                <div class="details">
+                    <h3>Grapes</h3>
+                    <p class="price">₹80/kg</p>
+                </div>
+            </div>
+
+            <!-- Fruit 5: Orange -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3mnpsg1yzeZLXVRwPdhvwuX5DDfDuMgQYZDhr4I8Uow&s=10"
+                        alt="Orange">
+                </div>
+                <div class="details">
+                    <h3>Orange</h3>
+                    <p class="price">₹70/kg</p>
+                </div>
+            </div>
+
+            <!-- Fruit 6: Papaya -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4e3CVEXTmgCUtA6qftODxmlu-8oyVaFxD05bBHkflGQ&s=10"
+                        alt="Papaya">
+                </div>
+                <div class="details">
+                    <h3>Papaya</h3>
+                    <p class="price">₹50/kg</p>
+                </div>
+            </div>
+
+            <!-- Fruit 7: Pomegranate -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTioS5epVMuMK7yOt-Qqw29_yOwGm3c_8kF9j6ZdnYwRA&s=10"
+                        alt="Pomegranate">
+                </div>
+                <div class="details">
+                    <h3>Pomegranate</h3>
+                    <p class="price">₹140/kg</p>
+                </div>
+            </div>
+
+            <!-- Fruit 8: Kiwi -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTq0nhZu3MCX25eLb5ICoHxJpG-aPHuvThztisgZOgqA&s=10"
+                        alt="Kiwi">
+                </div>
+                <div class="details">
+                    <h3>Kiwi</h3>
+                    <p class="price">₹200/kg</p>
+                </div>
+            </div>
+
+            <!-- NEW Fruit 9: Strawberry -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWBaxxFynRjCIqRipiJ6ZkvzFOUqDM0yf79PSjTtLydD-MV4u5TyeQ8ANU&s=10"
+                        alt="Strawberry">
+                </div>
+                <div class="details">
+                    <h3>Strawberry</h3>
+                    <p class="price">₹140/box</p>
+                </div>
+            </div>
+
+            <!-- NEW Fruit 10: Watermelon -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWIezy-LqXvzVLLJgS6TivUQMtiEPRRxOvt8LlOMds2g&s=10"
+                        alt="Watermelon">
+                </div>
+                <div class="details">
+                    <h3>Watermelon</h3>
+                    <p class="price">₹40/kg</p>
+                </div>
+            </div>
+
+            <!-- NEW Fruit 11: Pineapple -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNPHRpe8xw-odJCtj5GNg9lVwuVP6akx_RuGXTRfXwiw&s=10"
+                        alt="Pineapple">
+                </div>
+                <div class="details">
+                    <h3>Pineapple</h3>
+                    <p class="price">₹80/piece</p>
+                </div>
+            </div>
+
+            <!-- NEW Fruit 12: Avocado -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqVpI5VTNncRdimXbair9dWE-cEXF_gGFd7icFD5HJ4w&s=10"
+                        alt="Avocado">
+                </div>
+                <div class="details">
+                    <h3>Avocado</h3>
+                    <p class="price">₹250/kg</p>
+                </div>
+            </div>
+
+            <!-- NEW Fruit 13: Blueberries -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5WFQxBaJqfrUyU3lbhjCjV6dygVPd7MxzNRrIgKvS2A&s=10"
+                        alt="Blueberries">
+                </div>
+                <div class="details">
+                    <h3>Blueberries</h3>
+                    <p class="price">₹150/box</p>
+                </div>
+            </div>
+
+            <!-- NEW Fruit 14: Peach -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLfF9GLmQ0TVHBeJ3mmtAS45UTCelAJNtrCneQgDxGQ&s=10"
+                        alt="Peach">
+                </div>
+                <div class="details">
+                    <h3>Peach</h3>
+                    <p class="price">₹120/kg</p>
+                </div>
+            </div>
+
+            <!-- NEW Fruit 15: Cherry -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ35KGRA_VCPDXckmEBUF0cY8IuBbtw7pi1K45gX_nUiw&s=10"
+                        alt="Cherry">
+                </div>
+                <div class="details">
+                    <h3>Cherry</h3>
+                    <p class="price">₹300/kg</p>
+                </div>
+            </div>
+
+            <!-- NEW Fruit 16: Pear -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3-2E83RLuf4aSCXxIY03aZ-gZgPQb6PuXtrPl3sxOQ&s=10"
+                        alt="Pear">
+                </div>
+                <div class="details">
+                    <h3>Pear</h3>
+                    <p class="price">₹90/kg</p>
+                </div>
+            </div>
+
+            <!-- NEW Fruit 17: Coconut -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4uWnTsrdH4A7K0JyAzN9tThHBy0V8KJrNEXq9Un8ChA&s=10"
+                        alt="Coconut">
+                </div>
+                <div class="details">
+                    <h3>Coconut</h3>
+                    <p class="price">₹50/piece</p>
+                </div>
+            </div>
+
+            <!-- NEW Fruit 18: Dragon Fruit -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiP5Fpam6WyKPaThVlXZz6_Kxn2bd_vJsuzPIXaPbz5g&s=10"
+                        alt="Dragon Fruit">
+                </div>
+                <div class="details">
+                    <h3>Dragon Fruit</h3>
+                    <p class="price">₹100/piece</p>
+                </div>
+            </div>
+
+        </div>
+          <button class="filter-pill" onclick="history.back(-1)">⬅ go back</button>
+    </div>
+
+
+    <!--=========== Footer Section ===========-->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>FastMart</h4>
+                    <p>Your premium shopping destination and fresh groceries items and more.</p>
+                    <p style="font-family: cursive;">𒆜𝓐𝓻𝓴𒆜</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="all-items.html">Products</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="#">Track Order</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 FastMart. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- =========================
+         CART DRAWER
+    ========================= -->
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="drawer-overlay" id="drawer-overlay"></div>
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <h2>Shopping Cart</h2>
+                <button id="close-drawer-btn" class="close-btn">✕</button>
+            </div>
+            <div id="cart-items-container" class="drawer-body">
+                <p class="empty-msg">Your cart is empty.</p>
+            </div>
+            <div class="drawer-footer">
+                <h3>Total : <span id="cart-total-price">₹0</span></h3>
+                <button class="checkout-btn">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

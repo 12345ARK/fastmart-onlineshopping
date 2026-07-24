@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Contact Us - FastMart</title>
+
+    <style>
+        /* Dedicated layout styles for Contact Page */
+        .contact-wrapper {
+            margin: 40px auto;
+            max-width: 1100px;
+            width: 90%;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg, 0 10px 30px rgba(0,0,0,0.08));
+        }
+
+        .contact-form-pane {
+            padding: 40px;
+        }
+
+        .contact-form-pane h2 {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+        }
+
+        .contact-form-pane p {
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+
+        .contact-info-pane {
+            background: linear-gradient(135deg, #2d3436 0%, #0f172a 100%);
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .contact-info-pane h3 {
+            font-weight: 700;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .contact-info-pane h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 40px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .info-item i {
+            font-size: 1.4rem;
+            color: var(--secondary-color);
+            width: 30px;
+            text-align: center;
+        }
+
+        .info-item div h5 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .info-item div p {
+            margin: 2px 0 0;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .social-row h5 {
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .social-row .social-links {
+            justify-content: flex-start;
+        }
+
+        @media (max-width: 992px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .contact-form-pane, 
+            .contact-info-pane {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+    <nav class="navbar">
+        <div class="nav-wrapper">
+            <!-- Logo -->
+            <div class="nav-logo" onclick="window.location.href='index.html'">
+                <i class="fas fa-shopping-bag"></i>
+                <span>FastMart</span>
+            </div>
+
+            <!-- Desktop Search -->
+            <div class="search-wrapper desktop-search">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search products...">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <div class="search-results-dropdown" id="searchResults">
+                    <div id="resultsList"></div>
+                </div>
+            </div>
+
+            <!-- Desktop Menu -->
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="all-items.html">Products</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+
+            <!-- Icons -->
+            <div class="nav-icons">
+                <button class="icon-btn mobile-search-icon" id="mobileSearchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="icon-btn" id="cartBtn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge" id="cartCount">0</span>
+                </button>
+                <button class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Search Area -->
+        <div class="mobile-search-wrapper" id="mobileSearchWrapper">
+            <input type="text" id="mobileSearchInput" class="mobile-search-input" placeholder="Search products...">
+            <button class="mobile-search-submit">
+                <i class="fas fa-search"></i>
+            </button>
+            <button id="mobileSearchClose" class="mobile-search-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Search Results -->
+        <div class="mobile-search-results" id="mobileSearchResults">
+            <div id="mobileResultsList"></div>
+        </div>
+
+        <!-- Mobile Menu (Sliding Dropdown) -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-menu-link">Home</a>
+            <a href="all-items.html" class="mobile-menu-link">Products</a>
+            <a href="index.html#about" class="mobile-menu-link">About</a>
+            <a href="contact.html" class="mobile-menu-link">Contact Us</a>
+        </div>
+    </nav>
+
+
+    <!-- =========================
+         CONTACT MAIN WRAPPER
+    ========================= -->
+    <div class="contact-wrapper">
+        <div class="contact-grid">
+            
+            <!-- Left Pane: Interactive Form -->
+            <div class="contact-form-pane">
+                <h2>Get In Touch</h2>
+                <p>Have questions about deliveries, products, or bulk orders? Send us a message and our support team will reply within 24 hours.</p>
+                
+                <form id="contact-form">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" class="form-control w-100" placeholder="John Doe" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" class="form-control w-100" placeholder="john@example.com" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" class="form-control w-100" placeholder="e.g. Delivery Tracking, Product Inquiry" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" rows="5" class="form-control w-100" placeholder="Write your message here..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="modal-checkout-btn mt-2">Send Message</button>
+                </form>
+            </div>
+
+            <!-- Right Pane: Office details -->
+            <div class="contact-info-pane">
+                <div>
+                    <h3>Contact Information</h3>
+                    
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h5>Our Location</h5>
+                            <p>Sector 62, Noida, Uttar Pradesh, India</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <h5>Call Support</h5>
+                            <p>+91 98765 43210</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h5>Email Address</h5>
+                            <p>support@fastmart.com</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h5>Business Hours</h5>
+                            <p>Mon - Sat: 08:00 AM - 09:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="social-row">
+                    <h5>Follow Us</h5>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!--=========== Footer Section ===========-->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>FastMart</h4>
+                    <p>Your premium shopping destination and fresh groceries items and more.</p>
+                    <p style="font-family: cursive;">𒆜𝓐𝓻𝓴𒆜</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="all-items.html">Products</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="#">Track Order</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 FastMart. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- =========================
+         CART DRAWER
+    ========================= -->
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="drawer-overlay" id="drawer-overlay"></div>
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <h2>Shopping Cart</h2>
+                <button id="close-drawer-btn" class="close-btn">✕</button>
+            </div>
+            <div id="cart-items-container" class="drawer-body">
+                <p class="empty-msg">Your cart is empty.</p>
+            </div>
+            <div class="drawer-footer">
+                <h3>Total : <span id="cart-total-price">₹0</span></h3>
+                <button class="checkout-btn">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Details modal markup injected on-the-fly dynamically by script.js -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        // Send-message listener
+        document.getElementById("contact-form").addEventListener("submit", (e) => {
+            e.preventDefault();
+            
+            // Clear inputs
+            const name = document.getElementById("name").value;
+            document.getElementById("contact-form").reset();
+
+            // Trigger beautiful send success popup toast
+            const toast = document.createElement("div");
+            toast.className = "cart-toast";
+            toast.style.borderLeftColor = "#2ecc71"; // Success green border
+            toast.innerHTML = `
+                <div style="font-size: 20px; color: #2ecc71;"><i class="fas fa-paper-plane"></i></div>
+                <div class="cart-toast-info">
+                    <h5>Thank you, ${name}!</h5>
+                    <p>Message sent successfully!</p>
+                </div>
+            `;
+            const toastContainer = document.getElementById("toast-container");
+            if (toastContainer) {
+                toastContainer.appendChild(toast);
+                setTimeout(() => toast.classList.add("show"), 10);
+                setTimeout(() => {
+                    toast.classList.remove("show");
+                    setTimeout(() => toast.remove(), 400);
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+
+</html>

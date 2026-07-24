@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Chocolates & Candies - FastMart</title>
+
+    <style>
+        /* Category filters styling for Chocolates page */
+        .filter-section {
+            background: white;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 70px;
+            z-index: 99;
+            box-shadow: 0 4px 6px -6px rgba(0,0,0,0.1);
+        }
+
+        .filter-wrapper {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 5px 15px;
+            justify-content: center;
+        }
+
+        .filter-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-pill {
+            background: var(--light-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+            padding: 8px 22px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-pill.active, 
+        .filter-pill:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-1px);
+        }
+
+        .chocolates-grid .card {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .item-hidden {
+            opacity: 0 !important;
+            transform: scale(0.8) !important;
+            pointer-events: none;
+            position: absolute;
+            width: 0 !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .filter-section {
+                top: 60px;
+            }
+            .filter-wrapper {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+    <nav class="navbar">
+        <div class="nav-wrapper">
+            <!-- Logo -->
+            <div class="nav-logo" onclick="window.location.href='index.html'">
+                <i class="fas fa-shopping-bag"></i>
+                <span>FastMart</span>
+            </div>
+
+            <!-- Desktop Search -->
+            <div class="search-wrapper desktop-search">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search chocolates...">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <div class="search-results-dropdown" id="searchResults">
+                    <div id="resultsList"></div>
+                </div>
+            </div>
+
+            <!-- Desktop Menu -->
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#groceries">Groceries</a></li>
+                <li><a href="index.html#vegetables">Vegetables</a></li>
+                <li><a href="index.html#fruits">Fruits</a></li>
+            </ul>
+
+            <!-- Icons -->
+            <div class="nav-icons">
+                <button class="icon-btn mobile-search-icon" id="mobileSearchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="icon-btn" id="cartBtn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge" id="cartCount">0</span>
+                </button>
+                <button class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Search Area -->
+        <div class="mobile-search-wrapper" id="mobileSearchWrapper">
+            <input type="text" id="mobileSearchInput" class="mobile-search-input" placeholder="Search chocolates...">
+            <button class="mobile-search-submit">
+                <i class="fas fa-search"></i>
+            </button>
+            <button id="mobileSearchClose" class="mobile-search-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Search Results -->
+        <div class="mobile-search-results" id="mobileSearchResults">
+            <div id="mobileResultsList"></div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-menu-link">Home</a>
+            <a href="index.html#groceries" class="mobile-menu-link">Groceries</a>
+            <a href="index.html#vegetables" class="mobile-menu-link">Vegetables</a>
+            <a href="index.html#fruits" class="mobile-menu-link">Fruits</a>
+        </div>
+    </nav>
+
+
+    <!-- =========================
+         CATEGORY PILLS FILTER
+    ========================= -->
+    <div class="filter-section">
+        <div class="filter-wrapper">
+            <button class="filter-pill active" data-filter="all">All Chocolates (30)</button>
+            <button class="filter-pill" data-filter="milk">Milk Chocolate (10)</button>
+            <button class="filter-pill" data-filter="dark">Dark Chocolate (10)</button>
+            <button class="filter-pill" data-filter="white">White & Caramel (6)</button>
+            <button class="filter-pill" data-filter="premium">Nutty & Premium (4)</button>
+            <button class="filter-pill"  onclick="history.back(-1)">⬅ go back</button>
+        </div>
+    </div>
+
+
+    <!-- =========================
+         CHOCOLATES GALLERY
+    ========================= -->
+    <div class="container my-4">
+        <div class="heading text-center mb-4">
+            <h2 id="gallery-title" style="background: linear-gradient(135deg, #0f172a 0%, #2563eb 35%, #7c3aed 70%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; ">Chocolates Paradise</h2>
+        </div>
+
+        <div class="box chocolates-grid d-flex flex-wrap justify-content-center">
+            
+            <!-- --- Category: Milk Chocolate (10 items) --- -->
+            <div class="card" data-category="milk">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNNfkKeTo4IkCg96t9zh9mCiqzLIpqiW3XU3SFln14yA&s=10" alt="Dairy Milk Classic"></div>
+                <div class="details"><h3>Dairy Milk Classic</h3><p class="price">₹40</p></div>
+            </div>
+            <div class="card" data-category="milk">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaZ8LCRRNAXj9fQ0O4zAOIibDPFq3FxoBUBN0M9WDQkA&s=10" alt="Dairy Milk Fruit & Nut"></div>
+                <div class="details"><h3>Silk Fruit & Nut</h3><p class="price">₹80</p></div>
+            </div>
+            <div class="card" data-category="milk">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROp6cALJ_KEegqtththJipIkCWBYLRr1lwx9GqSj6DYg&s=10" alt="Dairy Milk Roast Almond"></div>
+                <div class="details"><h3>Silk Roast Almond</h3><p class="price">₹80</p></div>
+            </div>
+            <div class="card" data-category="milk">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4cnxIvpR_UHLSoZSc5t6JaJiPtNSc72x1mY215hjjuQ&s=10" alt="Dairy Milk Oreo"></div>
+                <div class="details"><h3>Silk Oreo Crunch</h3><p class="price">₹85</p></div>
+            </div>
+            <div class="card" data-category="milk">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM347OCTfEfhMdCoI-o1K3rHEKlKlqVBFcI-Tk2-6qdg&s" alt="KitKat Classic"></div>
+                <div class="details"><h3>KitKat Classic</h3><p class="price">₹25</p></div>
+            </div>
+            <div class="card" data-category="milk">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT85nnPXpnhQUNud9GM9yAjy7Tw-CrHHBgPctM8Yn7kw&s=10" alt="KitKat Sharebag"></div>
+                <div class="details"><h3>KitKat Sharebag</h3><p class="price">₹60</p></div>
+            </div>
+            <div class="card" data-category="milk">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIyLZFb2VNQwxcJND4ghOyTg5Q1AcNptPdSa2qR2Pd0g&s" alt="Munch"></div>
+                <div class="details"><h3>Munch Bar</h3><p class="price">₹15</p></div>
+            </div>
+            <div class="card" data-category="milk">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRg6RjcfHf_L95jINX7OkZz3W5SFQnUo5_aguF6MY1wYg&s=10" alt="Galaxy Smooth"></div>
+                <div class="details"><h3>Galaxy Smooth</h3><p class="price">₹50</p></div>
+            </div>
+            <div class="card" data-category="milk">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSedz5yJCrgoOwUGl1WNLlqqdidQEg9zDiqyWu08werbg&s=10" alt="Milkybar Creamy"></div>
+                <div class="details"><h3>Milkybar Creamy</h3><p class="price">₹20</p></div>
+            </div>
+            <div class="card" data-category="milk">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDkMnLe-aopFm5uKxZKaqO9LUP10jmRw-vCO1JXIOPIA&s=10" alt="Perks Wafer"></div>
+                <div class="details"><h3>Perk Wafer</h3><p class="price">₹10</p></div>
+            </div>
+
+            <!-- --- Category: Dark Chocolate (10 items) --- -->
+            <div class="card" data-category="dark">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjMxBn5YQnqEvcxDgqiodoBz22EAhBkSerw4Qv45_8eg&s=10" alt="Amul Dark 55%"></div>
+                <div class="details"><h3>Amul Dark 55%</h3><p class="price">₹100</p></div>
+            </div>
+            <div class="card" data-category="dark">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu4y_oon-uxJvc_ATVITkpFDh6DAUSr3LAT4GJ8snkuA&s" alt="Amul Dark 75%"></div>
+                <div class="details"><h3>Amul Dark 75%</h3><p class="price">₹110</p></div>
+            </div>
+            <div class="card" data-category="dark">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWM86f-SzSv8riWRo4c0zH3Z9J8vRjEB6_y1AQ7jELhw&s=10" alt="Amul Dark 90%"></div>
+                <div class="details"><h3>Amul Dark 90%</h3><p class="price">₹120</p></div>
+            </div>
+            <div class="card" data-category="dark">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2hAD-pKy7m--YqTtKrHHWcTt8dkLFi39m024zbUXlzw&s=10" alt="Hersheys Dark Cocoa"></div>
+                <div class="details"><h3>Hershey's Dark</h3><p class="price">₹90</p></div>
+            </div>
+            <div class="card" data-category="dark">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9X6hEQLN1dH1lvhdJJ8AGY30iyh4VcdjsppR3x2QH7Q&s=10" alt="Bournville Dark"></div>
+                <div class="details"><h3>Bournville Dark</h3><p class="price">₹80</p></div>
+            </div>
+            <div class="card" data-category="dark">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyQ0n7lm88gkr84q8tq0zHx7DEjmu-92FUfypnR9alRQ&s=10" alt="Bournville Cranberry"></div>
+                <div class="details"><h3>Bournville Berry</h3><p class="price">₹90</p></div>
+            </div>
+            <div class="card" data-category="dark">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMRVVlxWBJq5C3CbzUCzLnNCuz1G5CgmznpsPF2PnPkw&s=10" alt="Lindt Excellence 70%"></div>
+                <div class="details"><h3>Lindt Dark 70%</h3><p class="price">₹250</p></div>
+            </div>
+            <div class="card" data-category="dark">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWurlf3Z7G68CQ3fuNNRZBEmIDKNxeJR-kLEIjQsLeEg&s=10" alt="Lindt Excellence 85%"></div>
+                <div class="details"><h3>Lindt Dark 85%</h3><p class="price">₹270</p></div>
+            </div>
+            <div class="card" data-category="dark">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMuNu-tdxX6Bjk4fjdhWDwXIevjQ8d4SRzKSnk1IdcQQ&s=10" alt="Amul Bitter"></div>
+                <div class="details"><h3>Amul Bitter</h3><p class="price">₹115</p></div>
+            </div>
+            <div class="card" data-category="dark">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5NwZd0Pl2E0Tfjb03Ze4a3ZJxi8oOr3lgFozP4RIJQw&s=10" alt="Sugarfree Dark"></div>
+                <div class="details"><h3>Ketofit Dark</h3><p class="price">₹150</p></div>
+            </div>
+
+            <!-- --- Category: White & Caramel (6 items) --- -->
+            <div class="card" data-category="white">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl-xVOYljwuWdV0SMMIctA-3DpWnvAoZNcpI6WxP3O2g&s=10" alt="Milkybar White"></div>
+                <div class="details"><h3>Milkybar White</h3><p class="price">₹20</p></div>
+            </div>
+            <div class="card" data-category="white">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGH397AuLKPKHRBiQUXEmq4YaE3sEm4Kz6Cou3lplipw&s=10" alt="White Cookies crumble"></div>
+                <div class="details"><h3>Cookie Crumble</h3><p class="price">₹30</p></div>
+            </div>
+            <div class="card" data-category="white">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdiWV-OLY6dhd97M3w-eV1ADUMvJwYJYJOcJosAGmpIw&s" alt="Amul Limon"></div>
+                <div class="details"><h3>White Limon</h3><p class="price">₹90</p></div>
+            </div>
+            <div class="card" data-category="white">
+                <div class="image"><img src="https://cdn.grofers.com/da/cms-assets/cms/product/b84c4b34-7e98-41d3-ab27-8e3ecb1e28fd.jpg" alt="5 Star Caramel"></div>
+                <div class="details"><h3>5 Star Crunchy</h3><p class="price">₹20</p></div>
+            </div>
+            <div class="card" data-category="white">
+                <div class="image"><img src="https://m.media-amazon.com/images/I/51zNF+H+moL.jpg" alt="5 Star 3D"></div>
+                <div class="details"><h3>5 Star 3D</h3><p class="price">₹35</p></div>
+            </div>
+            <div class="card" data-category="white">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOVL87wwTLyTcGVCCT7Nsx4_Efzsx-5qcuR0vqF7edEg&s=10" alt="Bar One"></div>
+                <div class="details"><h3>Bar One Bar</h3><p class="price">₹15</p></div>
+            </div>
+
+            <!-- --- Category: Nutty & Premium (4 items) --- -->
+            <div class="card" data-category="premium">
+                <div class="image"><img src="https://storage.googleapis.com/shy-pub/319551/1694941973889_1.jpeg" alt="Ferrero Rocher T4"></div>
+                <div class="details"><h3>Ferrero T4 pack</h3><p class="price">₹185</p></div>
+            </div>
+            <div class="card" data-category="premium">
+                <div class="image"><img src="https://rukminim2.flixcart.com/image/480/640/xif0q/chocolate/a/q/c/185-6-moments-t16-16-pcs-in-each-box-2-ferrero-rocher-original-imagr6uh86sz4t2e.jpeg?q=90" alt="Ferrero Rocher T16"></div>
+                <div class="details"><h3>Ferrero T16 Box</h3><p class="price">₹550</p></div>
+            </div>
+            <div class="card" data-category="premium">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrX1kV7oWKjwbybM2B_kNRHVhKOQAmMZFY1T40cGnk0A&s=10" alt="Snickers Peanut"></div>
+                <div class="details"><h3>Snickers Peanut</h3><p class="price">₹45</p></div>
+            </div>
+            <div class="card" data-category="premium">
+                <div class="image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwE7LgWydKtXG-TvBrWl4OmCYKq9x0e3G1A_W4aaq5RQ&s=10" alt="Snickers Almond"></div>
+                <div class="details"><h3>Snickers Almond</h3><p class="price">₹50</p></div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!--=========== Footer Section ===========-->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>FastMart</h4>
+                    <p>Your premium shopping destination and fresh groceries items and more.</p>
+                    <p style="font-family: cursive;">𒆜𝓐𝓻𝓴𒆜</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="all-items.html">Products</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="#">Track Order</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 FastMart. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- =========================
+         CART DRAWER
+    ========================= -->
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="drawer-overlay" id="drawer-overlay"></div>
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <h2>Shopping Cart</h2>
+                <button id="close-drawer-btn" class="close-btn">✕</button>
+            </div>
+            <div id="cart-items-container" class="drawer-body">
+                <p class="empty-msg">Your cart is empty.</p>
+            </div>
+            <div class="drawer-footer">
+                <h3>Total : <span id="cart-total-price">₹0</span></h3>
+                <button class="checkout-btn">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        // ============= CLIENT-SIDE CHOCOLATES FILTERING =============
+        document.addEventListener("DOMContentLoaded", () => {
+            const filterPills = document.querySelectorAll(".filter-pill");
+            const galleryCards = document.querySelectorAll(".chocolates-grid .card");
+            const galleryTitle = document.getElementById("gallery-title");
+
+            filterPills.forEach(pill => {
+                pill.addEventListener("click", () => {
+                    // Update active button indicator
+                    filterPills.forEach(p => p.classList.remove("active"));
+                    pill.classList.add("active");
+
+                    const selectedFilter = pill.getAttribute("data-filter");
+
+                    // Dynamic text layout header update
+                    if (selectedFilter === "all") {
+                        galleryTitle.innerText = "Chocolates Paradise";
+                    } else if (selectedFilter === "milk") {
+                        galleryTitle.innerText = "Smooth Milk Chocolates";
+                    } else if (selectedFilter === "dark") {
+                        galleryTitle.innerText = "Rich Dark Chocolates";
+                    } else if (selectedFilter === "white") {
+                        galleryTitle.innerText = "Creamy White & Caramel Bars";
+                    } else if (selectedFilter === "premium") {
+                        galleryTitle.innerText = "Premium Nutty & Assorted Packs";
+                    }
+
+                    // Card visual visibility toggles
+                    galleryCards.forEach(card => {
+                        const itemCategory = card.getAttribute("data-category");
+                        if (selectedFilter === "all" || itemCategory === selectedFilter) {
+                            card.classList.remove("item-hidden");
+                        } else {
+                            card.classList.add("item-hidden");
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

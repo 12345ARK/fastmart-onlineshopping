@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>FastMart</title>
+    <style>
+        .go-more {
+            border: none;
+            background: none;
+            float: right;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .go-more:hover {
+            color: rgb(7, 7, 7);
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+    <nav class="navbar">
+        <div class="nav-wrapper">
+
+            <!-- Logo -->
+            <div class="nav-logo" onclick="window.location.href='index.html'">
+                <i class="fas fa-shopping-bag"></i>
+                <span>FastMart</span>
+            </div>
+
+            <!-- Desktop Search -->
+            <div class="search-wrapper desktop-search">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search products...">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <div class="search-results-dropdown" id="searchResults">
+                    <div id="resultsList"></div>
+                </div>
+            </div>
+
+            <!-- Desktop Menu -->
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="all-items.html">Products</a></li>
+
+                <li class="nav-dropdown">
+                    <a href="#" class="dropdown-trigger">More <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="login.html" id="nav-login-btn">Login / Register</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Icons -->
+            <div class="nav-icons">
+                <!-- Mobile Search Toggle -->
+                <button class="icon-btn mobile-search-icon" id="mobileSearchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+
+                <!-- Cart Toggle -->
+                <button class="icon-btn" id="cartBtn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge" id="cartCount">0</span>
+                </button>
+
+                <!-- Hamburger Menu -->
+                <button class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Mobile Search Area -->
+        <div class="mobile-search-wrapper" id="mobileSearchWrapper">
+            <input type="text" id="mobileSearchInput" class="mobile-search-input" placeholder="Search products...">
+            <button class="mobile-search-submit">
+                <i class="fas fa-search"></i>
+            </button>
+            <button id="mobileSearchClose" class="mobile-search-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Search Results -->
+        <div class="mobile-search-results" id="mobileSearchResults">
+            <div id="mobileResultsList"></div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-menu-link">Home</a>
+            <a href="all-items.html" class="mobile-menu-link">Products</a>
+            <a href="index.html#about" class="mobile-menu-link">About Us</a>
+            <a href="contact.html" class="mobile-menu-link">Contact Us</a>
+            <a href="login.html" class="mobile-menu-link" id="mobile-login-btn">Login / Register</a>
+        </div>
+    </nav>
+
+
+    <!--======== Category Icon Slider ========-->
+    <div class="icon-slider">
+        <div class="icon-item">
+            <a href="all-items.html">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK5GfZhNpsFNSe5MwH6E56BETlDls1t_yxb9TVIrPW7g&s=10"
+                    alt="All Items">
+            </a>
+            <div class="icon-name">
+                <h6>All-Items</h6>
+            </div>
+        </div>
+        <div class="icon-item">
+            <a href="vegetables.html">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1gCdhJEUUJQNPWnIvx0v3iIcDE1Fo727IAVTXq8pMVA&s=10"
+                    alt="Vegetables">
+            </a>
+            <div class="icon-name">
+                <h6>Vegetables</h6>
+            </div>
+        </div>
+        <div class="icon-item">
+            <a href="fruits.html">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlkdbGfJEjCfPRJVuP7chHoN0Dzkabz2RMgAoxrES_Fw&s=10"
+                    alt="Fruits">
+            </a>
+            <div class="icon-name">
+                <h6>Fruits</h6>
+            </div>
+        </div>
+        <div class="icon-item">
+            <a href="spices.html">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRtopP96jQnCqiVBA1yjx3iUS0Qs3seo1SnXeThRj88A&s"
+                    alt="Spices">
+            </a>
+            <div class="icon-name">
+                <h6>Spices</h6>
+            </div>
+        </div>
+        <div class="icon-item">
+            <a href="biscuits.html">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlzs31ffF5CZq7YMphj9ozD91q4-MP6NRgnCkxdyHsBg&s"
+                    alt="Biscuit">
+            </a>
+            <div class="icon-name">
+                <h6>Biscuit</h6>
+            </div>
+        </div>
+        <div class="icon-item">
+            <a href="chocolate.html">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSczg90iaTWdBKE6gARi4OQbZHvpVCfeAHNy6fxayL5bA&s=10"
+                    alt="Chocolate">
+            </a>
+            <div class="icon-name">
+                <h6>Chocolate</h6>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <!-- ================ hero section ================= -->
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title"><b>Welcome to FastMart</b></h1>
+            <p class="hero-lead">"Vegetables are the soul's food, the poet's inspiration, and the chef's canvas.
+                Together we can fight against hunger and provide a better tomorrow by feeding our community."</p>
+            <p class="hero-subtitle">Discover Amazing Products at Unbeatable Prices</p>
+        </div>
+        <div class="hero-background">
+            <div class="floating-box box-1">🍎</div>
+            <div class="floating-box box-2">🥦</div>
+            <div class="floating-box box-3">🍌</div>
+            <div class="floating-box box-4">🥔</div>
+        </div>
+    </section>
+
+
+    <!--======== Featured Carousel Slider ========-->
+    <div id="autoCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="container">
+            <div class="p03 carousel-inner rounded-4">
+                <div class="carousel-item active">
+                    <img src="https://cdn.phototourl.com/free/2026-07-16-9ee4a513-0b3c-4eb8-b7dd-a16fc8e0ad41.jpg"
+                        class="d-block w-100" alt="Promo Slide 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://img.magnific.com/free-vector/world-vegan-day-sale-banner-template_23-2149741503.jpg?semt=ais_hybrid&w=740&q=80"
+                        class="d-block w-100 " alt="Promo Slide 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://cdn.shopify.com/s/files/1/0734/0566/1405/files/Branded_Food_Biscuits_Cookies_L1_Mobile.jpg?v=1770877557"
+                        class="d-block w-100" alt="Promo Slide 3">
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#autoCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#autoCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </button>
+    </div>
+    <br>
+
+
+    <!--=========== Groceries Section ===========-->
+    <div class="containerA" id="groceries">
+        <div class="heading">
+            <h2>Groceries Items ⬇</h2>
+        </div>
+        <div class="box">
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTosU4leQ7danL1up5ES0X44uXwDQW3ZWViwBRHamgX7w&s=10"
+                        alt="Rice">
+                </div>
+                <div class="details">
+                    <h3>Rice</h3>
+                    <p class="price">₹35/kg</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS78AkfSyg_GO-jU0d0wv_CJ14uAZwhEiTFKGf8DKRS2w&s=10"
+                        alt="Flour">
+                </div>
+                <div class="details">
+                    <h3>Flour</h3>
+                    <p class="price">₹42/kg</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrhxBzT1SuLnjFEXaVqoOQy2lkfF1KN4px5u-Nb68rPA&s=10"
+                        alt="Salt">
+                </div>
+                <div class="details">
+                    <h3>Salt</h3>
+                    <p class="price">₹25/kg</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2DsOqM0AT-zJTS3ARCRxuEARBM5tpqByWGcIuAq47Sg&s=10"
+                        alt="Mustard Oil">
+                </div>
+                <div class="details">
+                    <h3>Mustard Oil</h3>
+                    <p class="price">₹180/liter</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWTf3Qr_eIIKyDJ3MLY2WjMFFlLf0AyIEsPns48A9p9w&s=10"
+                        alt="Refined Oil">
+                </div>
+                <div class="details">
+                    <h3>Refined Oil</h3>
+                    <p class="price">₹170/kg</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMM1mSY9AYaRNiREQJ10Ja3Hp8JO0hSCyFHmbzQKZlAw&s=10"
+                        alt="MDH Kitchen King">
+                </div>
+                <div class="details">
+                    <h3>MDH Kitchen King Mixed Spices</h3>
+                    <p class="price">₹110/kg</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoULYd8tLrXG5jtpwewia6WvKqE2Io_mlmLIq0abcRng&s=10"
+                        alt="Ginger">
+                </div>
+                <div class="details">
+                    <h3>Ginger</h3>
+                    <p class="price">₹100/kg</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCilJgT6rNhuRmOS1YZVOSWqqDBGHO7Sd7madEUbrj9w&s=10"
+                        alt="Green Chilli">
+                </div>
+                <div class="details">
+                    <h3>Green Chilli (100gm)</h3>
+                    <p class="price">₹10.00</p>
+                </div>
+            </div>
+        </div>
+        <a class="go-more" href="all-items.html">More Items &#x2192;</a>
+    </div>
+    <br>
+
+
+    <!-- ============== Most viewed =============== -->
+
+    <div class="containerA" id="">
+        <div class="heading">
+            <h2 class="shake">Most Viewed Items ⬇</h2>
+        </div>
+        <div class="box">
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZQy9HZTVzx28uxoSkmpCTT4YIMzeAqgZPJZe9NU-8ZHD1ZRh2J32N44g&s=10"
+                        alt="Colgate">
+                </div>
+                <div class="details">
+                    <h3>Colgate® Maximum Cavity Protection Great Regular Flavor Toothpaste | Colgate Cavity Protection
+                    </h3>
+                    <p class="price">₹10.00</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://assets.myntassets.com/h_1440,q_75,w_1080/v1/assets/images/30618559/2024/8/21/084f06d7-7699-4fa4-831b-314132a60d7b1724237153032-Colgate-Visible-White-Purple-Toothpaste-Color-Corrects-Yello-1.jpg"
+                        alt="Colgate">
+                </div>
+                <div class="details">
+                    <h3>Colgate Visible White Purple Toothpaste Color-Corrects Yellow Tones - 240g</h3>
+                    <p class="price">₹204.00</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://www.quickpantry.in/cdn/shop/files/ColgateMaxFreshSpicyFreshToothpasteQuickPantry.jpg?v=1751026440&width=1214"
+                        alt="Colgate">
+                </div>
+                <div class="details">
+                    <h3>Colgate MaxFresh Spicy Fresh Toothpaste – Quick Pantry</h3>
+                    <p class="price">₹71.00</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://images.apollo247.in/pub/media/catalog/product/S/E/SEN0082_1.jpg" alt="Colgate">
+                </div>
+                <div class="details">
+                    <h3>Sensodyne Fresh Mint Toothpaste, 40 gm</h3>
+                    <p class="price">₹85.00</p>
+                </div>
+            </div>
+             <div class="card">
+                <div class="image">
+                    <img src="https://m.media-amazon.com/images/I/71EDUcz6heL._AC_UF1000,1000_QL80_.jpg" alt="Colgate">
+                </div>
+                <div class="details">
+                    <h3>Dabur Lal Dant Manjan Tooth Powder 300g | 100% Natural Ayurvedic Formula for Strong Teeth</h3>
+                    <p class="price">₹179.00</p>
+                </div>
+            </div>
+             <div class="card">
+                <div class="image">
+                    <img src="https://www.quickpantry.in/cdn/shop/products/dabur-lal-dant-manjan-ayurvedic-toothpowder-quick-pantry-1.png?v=1710538463" alt="Colgate">
+                </div>
+                <div class="details">
+                    <h3>Dabur Red Lal Dant Manjan</h3>
+                    <p class="price">₹39.00</p>
+                </div>
+            </div>
+             <div class="card">
+                <div class="image">
+                    <img src="https://static.wixstatic.com/media/ed2bc8_3c2b62e02da4469d80b6f2ca5bb62b6e~mv2.jpg/v1/fill/w_520,h_822,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/ed2bc8_3c2b62e02da4469d80b6f2ca5bb62b6e~mv2.jpg" alt="Colgate">
+                </div>
+                <div class="details">
+                    <h3>Sensodyne Daily Care Soft Toothbrush (set of 5)</h3>
+                    <p class="price">₹175.00</p>
+                </div>
+            </div>
+             <div class="card">
+                <div class="image">
+                    <img src="https://cdn.pixelbin.io/v2/plain-cake-860195/netmed/wrkr/products/assets/item/free/original/WiK0z-DNAr-thermoseal_ortho_tooth_brush_1s_0_0.jpg" alt="Colgate">
+                </div>
+                <div class="details">
+                    <h3> Thermoseal Ortho Tooth Brush</h3>
+                    <p class="price">₹25.00</p>
+                </div>
+            </div>
+        </div>
+    </div><br>
+
+    <!--=========== Today's Best Items Section ===========-->
+    <div class="p6-boss">
+        <div class="p6-heading">
+            <h2>Daily Uses Items ⬇</h2>
+        </div>
+        <div class="p6-cont">
+            <div class="p6-box1">
+                <div class="p6-img">
+                    <img src="https://cdn.phototourl.com/free/2026-07-17-695d1412-7e14-4fed-bcf2-215502cf75ee.jpg"
+                        alt="Best Deals Promo">
+                </div>
+            </div>
+            <div class="p6-box2">
+                <div class="p6-box">
+                    <div class="p6-card">
+                        <div class="p6-image">
+                            <img src="https://www.bbassets.com/media/uploads/p/l/212136_19-surf-excel-easy-wash-detergent-powder.jpg"
+                                alt="Surf Excel Easy Wash">
+                        </div>
+                        <div class="p6-details">
+                            <h3>Surf Excel Easy Wash Detergent Powder 3 kg</h3>
+                            <p class="price">₹360.00</p>
+                        </div>
+                    </div>
+                    <div class="p6-card">
+                        <div class="p6-image">
+                            <img src="https://www.quickpantry.in/cdn/shop/products/surf-excel-quick-wash-detergent-powder-quick-pantry-2.jpg?v=1710538093"
+                                alt="Surf Excel Quick Wash">
+                        </div>
+                        <div class="p6-details">
+                            <h3>Surf Excel Quick Wash Detergent Powder 500 g</h3>
+                            <p class="price">₹110.00</p>
+                        </div>
+                    </div>
+                    <div class="p6-card">
+                        <div class="p6-image">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrOyhxJXGE7MuMZRcvHw0IXGjefKtjUTbxyK0ocOqX3ryM8LqVZr_JGbA&s=10"
+                                alt="Lifebuoy Soap">
+                        </div>
+                        <div class="p6-details">
+                            <h3>Lifebuoy Soap -100gm Set of 5</h3>
+                            <p class="price">₹106.00</p>
+                        </div>
+                    </div>
+                    <div class="p6-card">
+                        <div class="p6-image">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7gGO-KP-FF6EWn17x28vxw-fljabfHkcs0VwLvDWSgxUzJFpP_DWBrhri&s=10"
+                                alt="Dettol Soap">
+                        </div>
+                        <div class="p6-details">
+                            <h3>Dettol Germ Protection Soap 45g</h3>
+                            <p class="price">₹10.00</p>
+                        </div>
+                    </div>
+                    <div class="p6-card">
+                        <div class="p6-image">
+                            <img src="https://silverspotindia.com/wp-content/uploads/2023/11/Dettol-Original-Soap-375-gm-5x75-gm-1.jpg"
+                                alt="Dettol Soap 5-Pack">
+                        </div>
+                        <div class="p6-details">
+                            <h3>Dettol Original Bathing Soap (Buy 4 Get 1 Free)</h3>
+                            <p class="price">₹165.00</p>
+                        </div>
+                    </div>
+                    <div class="p6-card">
+                        <div class="p6-image">
+                            <img src="https://www.starquik.com/cdn/shop/files/SQ102454_FOP_f640dfde-508e-42d7-ad7e-391309df9e11.jpg?v=1776848166"
+                                alt="Surf Excel ">
+                        </div>
+                        <div class="p6-details">
+                            <h3>Surf Excel Detergent Powder 250g</h3>
+                            <p class="price">₹33.00</p>
+                        </div>
+                    </div>
+                    <div class="p6-card">
+                        <div class="p6-image">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgpwPK4y_1eW56JryN7sfWzKAd11zUAKsjzchZqes3Br6MBV69ucU8SnCM&s=10"
+                                alt="Lux Soap">
+                        </div>
+                        <div class="p6-details">
+                            <h3>Lux Radiant Glow Soap</h3>
+                            <p class="price">₹25.00</p>
+                        </div>
+                    </div>
+                    <div class="p6-card">
+                        <div class="p6-image">
+                            <img src="https://www.bbassets.com/media/uploads/p/l/40223449_3-lux-soft-glow-beauty-soap-rose-vitamin-e-for-glowing-skin.jpg"
+                                alt="Lux Rose Soap">
+                        </div>
+                        <div class="p6-details">
+                            <h3>Lux Soft Glow Soap - Rose & Vitamin E 150 g (Pack of 8)</h3>
+                            <p class="price">₹424.00</p>
+                        </div>
+                    </div>
+                    <div class="p6-card">
+                        <div class="p6-image">
+                            <img src="https://freshlee.in/cdn/shop/files/1065356_2b177799-88a9-417e-96df-1c587efcc7da_grande.jpg?v=1756740335"
+                                alt="Sunsilk Shampoo">
+                        </div>
+                        <div class="p6-details">
+                            <h3>SunSilk Thick & long Shampoo 650ml</h3>
+                            <p class="price">₹840.00</p>
+                        </div>
+                    </div>
+                    <div class="p6-card">
+                        <div class="p6-image">
+                            <img src="https://5.imimg.com/data5/ANDROID/Default/2023/5/304994075/FB/IQ/TB/189069567/product-jpeg.jpg"
+                                alt="Hair Shampoo">
+                        </div>
+                        <div class="p6-details">
+                            <h3>Hair Shampoo, Packaging Size: 90ml</h3>
+                            <p class="price">₹400.00</p>
+                        </div>
+                    </div>
+                    <div class="p6-card">
+                        <div class="p6-image">
+                            <img src="https://img.thecdn.in/392528/SKU-0463_0-1749725100207.png?width=600&format=webp"
+                                alt="Head & Shoulders">
+                        </div>
+                        <div class="p6-details">
+                            <h3>Head & Shoulders 2 In One Shampoo</h3>
+                            <p class="price">₹99.00</p>
+                        </div>
+                    </div>
+                    <div class="p6-card">
+                        <div class="p6-image">
+                            <img src="https://services.kpnfresh.com/media/v1/products/images/be2c744d-5478-4a06-ace9-c207b8fd1f25/dove-hair-fall-rescue-shampoo.webp?c_type=C1"
+                                alt="Dove Shampoo">
+                        </div>
+                        <div class="p6-details">
+                            <h3>Dove Hair Fall Rescue Shampoo</h3>
+                            <p class="price">₹178.00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+
+    <!--=========== Vegetables Section ===========-->
+    <div class="containerB" id="vegetables">
+        <div class="headingB">
+            <h2>Fresh Vegetables &#x2192;</h2>
+        </div>
+        <div class="boxB">
+            <div class="cardB">
+                <div class="imageB">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJg4few-oaxMZCF07YkQNB4VPgRv_RWetgFR_2y5sEYw&s=10"
+                        alt="Potato">
+                </div>
+                <div class="details">
+                    <h3>Potato</h3>
+                    <p class="price">₹30/kg</p>
+                </div>
+            </div>
+            <div class="cardB">
+                <div class="imageB">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq_gE0KSjPPQ9-ucTIOnM7ZzVLI9Hx-_XWERQHYtnbHQ&s=10"
+                        alt="Tomato">
+                </div>
+                <div class="details">
+                    <h3>Tomato</h3>
+                    <p class="price">₹40/kg</p>
+                </div>
+            </div>
+            <div class="cardB">
+                <div class="imageB">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-_AASdasNhqRoAJGnFPv2ftmqYHevLkDnArQFrh-CTQ&s=10"
+                        alt="Onion">
+                </div>
+                <div class="details">
+                    <h3>Onion</h3>
+                    <p class="price">₹35/kg</p>
+                </div>
+            </div>
+            <div class="cardB">
+                <div class="imageB">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl1R53lsnPXQ8aJNaxEKZmFo6dMc2NQx_wa7CNKdg62Q&s=10"
+                        alt="Carrot">
+                </div>
+                <div class="details">
+                    <h3>Carrot</h3>
+                    <p class="price">₹50/kg</p>
+                </div>
+            </div>
+            <div class="cardB">
+                <div class="imageB">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY2ty1K4feGvGc-OGQvdFpT8tCPBHJLU1epS-A4BwLSQ&s=10"
+                        alt="Cabbage">
+                </div>
+                <div class="details">
+                    <h3>Cabbage</h3>
+                    <p class="price">₹25/kg</p>
+                </div>
+            </div>
+            <div class="cardB">
+                <div class="imageB">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcQBP7EPIvjGZIdUqFTUargb0s6HG8zSWXlI-z3cbNrA&s=10"
+                        alt="Red Chilli">
+                </div>
+                <div class="details">
+                    <h3>Red Chilli</h3>
+                    <p class="price">₹60/kg</p>
+                </div>
+            </div>
+            <div class="cardB">
+                <div class="imageB">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAdvd65y45I_CZd_8SrBnLaDLAWUjJpo_B13lCPysQsQ&s=10"
+                        alt="Cauliflower">
+                </div>
+                <div class="details">
+                    <h3>Cauliflower</h3>
+                    <p class="price">₹45/kg</p>
+                </div>
+            </div>
+            <div class="cardB">
+                <div class="imageB">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHgWtXzTpxU5n8VOesvwgyH3C0NRs0MWN2iyDvtI7lgw&s"
+                        alt="Cucumber">
+                </div>
+                <div class="details">
+                    <h3>Cucumber</h3>
+                    <p class="price">₹30/kg</p>
+                </div>
+            </div>
+        </div>
+        <a class="go-more" href="vegetables.html">More Items &#x2192;</a>
+    </div>
+    <br>
+
+
+    <!--=========== Promo Banner Image ===========-->
+    <div class="banr">
+        <div class="crd-item">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzB6X1DDR8W00y26DhIuxuz8Ie6SL4Uj2X6nP26td29qCCKTiFQFx_yWMu&s=10"
+                alt="Big Sale Banner">
+        </div>
+    </div><br>
+
+
+    <!--=========== Fruits Section ===========-->
+    <div class="containerA" id="fruits">
+        <div class="heading">
+            <h2>Fruits ⬇</h2>
+        </div>
+        <div class="box">
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2wDXfk9-zgVxSk-z-MqjgIA7jwx3fHBZ91J-JWUaPIg&s=10"
+                        alt="Apple">
+                </div>
+                <div class="details">
+                    <h3>Apple</h3>
+                    <p class="price">₹120/kg</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8KwARHg9glIy29RMCS9x2h-tN0vG84FZevfey8--ckA&s=10"
+                        alt="Banana">
+                </div>
+                <div class="details">
+                    <h3>Banana</h3>
+                    <p class="price">₹60/kg</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2HGhdyMySaxcTlACSo7-bDFk8WVUXaH1raChHF-Swug&s=10"
+                        alt="Mango">
+                </div>
+                <div class="details">
+                    <h3>Mango</h3>
+                    <p class="price">₹150/kg</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSh8i9lqvcPmxGg9W-uek87NZhsiQiqFNSMMUphixtsXw&s=10"
+                        alt="Grapes">
+                </div>
+                <div class="details">
+                    <h3>Grapes</h3>
+                    <p class="price">₹80/kg</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWBaxxFynRjCIqRipiJ6ZkvzFOUqDM0yf79PSjTtLydD-MV4u5TyeQ8ANU&s=10"
+                        alt="Strawberry">
+                </div>
+                <div class="details">
+                    <h3>Strawberry</h3>
+                    <p class="price">₹140/box</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWIezy-LqXvzVLLJgS6TivUQMtiEPRRxOvt8LlOMds2g&s=10"
+                        alt="Watermelon">
+                </div>
+                <div class="details">
+                    <h3>Watermelon</h3>
+                    <p class="price">₹40/kg</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNPHRpe8xw-odJCtj5GNg9lVwuVP6akx_RuGXTRfXwiw&s=10"
+                        alt="Pineapple">
+                </div>
+                <div class="details">
+                    <h3>Pineapple</h3>
+                    <p class="price">₹80/piece</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqVpI5VTNncRdimXbair9dWE-cEXF_gGFd7icFD5HJ4w&s=10"
+                        alt="Avocado">
+                </div>
+                <div class="details">
+                    <h3>Avocado</h3>
+                    <p class="price">₹250/kg</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5WFQxBaJqfrUyU3lbhjCjV6dygVPd7MxzNRrIgKvS2A&s=10"
+                        alt="Blueberries">
+                </div>
+                <div class="details">
+                    <h3>Blueberries</h3>
+                    <p class="price">₹150/box</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLfF9GLmQ0TVHBeJ3mmtAS45UTCelAJNtrCneQgDxGQ&s=10"
+                        alt="Peach">
+                </div>
+                <div class="details">
+                    <h3>Peach</h3>
+                    <p class="price">₹120/kg</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ35KGRA_VCPDXckmEBUF0cY8IuBbtw7pi1K45gX_nUiw&s=10"
+                        alt="Cherry">
+                </div>
+                <div class="details">
+                    <h3>Cherry</h3>
+                    <p class="price">₹300/kg</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3mnpsg1yzeZLXVRwPdhvwuX5DDfDuMgQYZDhr4I8Uow&s=10"
+                        alt="Orange">
+                </div>
+                <div class="details">
+                    <h3>Orange</h3>
+                    <p class="price">₹70/kg</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4e3CVEXTmgCUtA6qftODxmlu-8oyVaFxD05bBHkflGQ&s=10"
+                        alt="Papaya">
+                </div>
+                <div class="details">
+                    <h3>Papaya</h3>
+                    <p class="price">₹50/kg</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTioS5epVMuMK7yOt-Qqw29_yOwGm3c_8kF9j6ZdnYwRA&s=10"
+                        alt="Pomegranate">
+                </div>
+                <div class="details">
+                    <h3>Pomegranate</h3>
+                    <p class="price">₹140/kg</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTq0nhZu3MCX25eLb5ICoHxJpG-aPHuvThztisgZOgqA&s=10"
+                        alt="Kiwi">
+                </div>
+                <div class="details">
+                    <h3>Kiwi</h3>
+                    <p class="price">₹200/kg</p>
+                </div>
+            </div>
+        </div>
+        <a class="go-more" href="fruits.html">More Items &#x2192;</a>
+    </div>
+    <br>
+
+
+    <!--=========== Promo Banner Image ===========-->
+    <div class="banr">
+        <div class="crd-item">
+            <img src="https://cdn.phototourl.com/free/2026-07-18-da2949f5-d671-45ea-ba39-69704ab4b192.jpg"
+                alt="Big Sale Banner">
+        </div>
+    </div>
+
+
+    <!--=========== Recommended Section ===========-->
+    <div class="containerA">
+        <div class="heading">
+            <h2>Recommended For You ⬇</h2>
+        </div>
+        <div class="box">
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXFuDkrzsaw_CZpDhnK0ES5fizjQdpvmt4mUhlhT684g&s=10"
+                        alt="Maggie">
+                </div>
+                <div class="details">
+                    <h3>Maggie</h3>
+                    <p class="price">₹15</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7OR9rfWo-j0tZozFSXrebeH5N8-9w6Q0qq3dQHeRUKw&s=10"
+                        alt="Kurkure">
+                </div>
+                <div class="details">
+                    <h3>Kurkure</h3>
+                    <p class="price">₹20</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs4efwngt6jW0QzJh5wLs8HbpsVf3aSHmyvPk5KQc5TA&s=10"
+                        alt="Dairy Milk">
+                </div>
+                <div class="details">
+                    <h3>Cadbury Dairy Milk Silk</h3>
+                    <p class="price">₹90</p>
+                </div>
+            </div>
+            <div class="card" data-category="cream">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWz0wbsavZOb5kQdZzEUXSmAFsAKg7SOrouCgeezUq8Q&s=10"
+                        alt="Tiger Chocolate">
+                </div>
+                <div class="details">
+                    <h3>Tiger Cream</h3>
+                    <p class="price">₹10</p>
+                </div>
+            </div>
+            <div class="card" data-category="cream">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR56JP7A3MaxjOA0zCV7S8aAwDyIQmQNbbLhXo5CWYxQQ&s=10"
+                        alt="Good Day Choco">
+                </div>
+                <div class="details">
+                    <h3>Choco Chips</h3>
+                    <p class="price">₹30</p>
+                </div>
+            </div>
+
+            <!-- --- Category: Sweet & Butter (10 items) --- -->
+            <div class="card" data-category="sweet">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTn9n_9Wkopi0A1r6DNft3vX6qYdYmE-7UdovvKdg9SGg&s=10"
+                        alt="Good Day Butter">
+                </div>
+                <div class="details">
+                    <h3>Good Day Butter</h3>
+                    <p class="price">₹20</p>
+                </div>
+            </div>
+            <div class="card" data-category="sweet">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThO8zTyi6bD7RMzJxO8QI2IbQ67fa4RKX1TUtNvqKp3w&s=10"
+                        alt="Good Day Cashew">
+                </div>
+                <div class="details">
+                    <h3>Good Day Cashew</h3>
+                    <p class="price">₹25</p>
+                </div>
+            </div>
+            <div class="card" data-category="sweet">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAkCZFa_1TzEH7Ijdfjn_5N9NZ6tQce-BiwBIn0HVxPw&s=10"
+                        alt="Almond Pista">
+                </div>
+                <div class="details">
+                    <h3>Almond Cookies</h3>
+                    <p class="price">₹30</p>
+                </div>
+            </div>
+            <div class="card" data-category="sweet">
+                <div class="image">
+                    <img src="https://www.bbassets.com/media/uploads/p/l/411241_3-britannia-britannia-marie-400-gm-pk-15.jpg"
+                        alt="Marie Gold">
+                </div>
+                <div class="details">
+                    <h3>Marie Gold</h3>
+                    <p class="price">₹52</p>
+                </div>
+            </div>
+            <div class="card" data-category="sweet">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLzuMWfse5P-N2YXH_cuWSaEgipuUtkLqjN1OIip5eqw&s=10"
+                        alt="Doodh Biscuits">
+                </div>
+                <div class="details">
+                    <h3>Doodh Biscuit</h3>
+                    <p class="price">₹10</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8lyFWzg6FiTbYPlrs16_15hW8wDgplNIqkCsp65h_ag&s=10"
+                        alt="Marie Gold">
+                </div>
+                <div class="details">
+                    <h3>Marie Gold</h3>
+                    <p class="price">₹30</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYxOpjFfAW5nXBp7Pmkgs01g45DK5f9-xfsUD5k3dHNG0mLaE7BJq1NRjr&s=10"
+                        alt="KitKat">
+                </div>
+                <div class="details">
+                    <h3>KitKat</h3>
+                    <p class="price">₹25</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8JlHuGa6bQkX1sBKTqW4p3SG7Uh5_VlJzuDYDH5VieQ&s=10"
+                        alt="ParleG">
+                </div>
+                <div class="details">
+                    <h3>ParleG</h3>
+                    <p class="price">₹10</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwkqHkqKUuq2ogGyn9wSNiRZgzS9wkvjrbS7t-qoEGrg&s=10"
+                        alt="Munch">
+                </div>
+                <div class="details">
+                    <h3>Munch</h3>
+                    <p class="price">₹15</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFmncxoob5VmA5G6IBK4aKnJmHrdZjGr7boOmemYyUFw&s=10"
+                        alt="Rusk">
+                </div>
+                <div class="details">
+                    <h3>Rusk</h3>
+                    <p class="price">₹45</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+
+    <!--=========== About Section ===========-->
+    <section class="about" id="about">
+        <h2>About FastMart</h2>
+        <div class="about-text">
+            <p>Welcome to <span>FastMart</span>, where we make healthy eating simple and hassle-free. We understand
+                that life gets busy, which is why we handle the heavy lifting of grocery shopping for you. From crisp
+                farm vegetables to everyday household essentials, we deliver everything you need right when you need it.
+                <br> <br>
+                FastMart is your premier destination for premium products, items, and exceptional shopping experiences.
+                With over a decade of service, we've built a reputation for quality, reliability, and customer
+                satisfaction.
+            </p>
+            <div class="stats">
+                <div class="stat">
+                    <h3>50K+</h3>
+                    <p>Happy Customers</p>
+                </div>
+                <div class="stat">
+                    <h3>10K+</h3>
+                    <p>Products</p>
+                </div>
+                <div class="stat">
+                    <h3>99.8%</h3>
+                    <p>Satisfaction Rate</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!--=========== Footer Section ===========-->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>FastMart</h4>
+                    <p>Your premium shopping destination and fresh groceries items and more.</p>
+                    <p style="font-family: cursive;">𝓐𝓻𝓴</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#autoCarousel">Products</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="#">Track Order</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 FastMart. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- =========================
+         CART DRAWER
+    ========================= -->
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="drawer-overlay" id="drawer-overlay"></div>
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <h2>Shopping Cart</h2>
+                <button id="close-drawer-btn" class="close-btn">✕</button>
+            </div>
+            <div id="cart-items-container" class="drawer-body">
+                <p class="empty-msg">Your cart is Empty.</p>
+            </div>
+            <div class="drawer-footer">
+                <h3>Total : <span id="cart-total-price">₹0</span></h3>
+                <button class="checkout-btn">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

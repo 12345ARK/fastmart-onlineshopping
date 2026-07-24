@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Fresh Vegetables - FastMart</title>
+    <style>
+         .filter-pill {
+            background: var(--light-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+            padding: 8px 22px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            float:right;
+        }
+ 
+        .filter-pill:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-1px);
+        }
+
+        .nav-menu{
+            border: none;
+            background: none;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+    <nav class="navbar">
+        <div class="nav-wrapper">
+            <!-- Logo -->
+            <div class="nav-logo" onclick="window.location.href='index.html'">
+                <i class="fas fa-shopping-bag"></i>
+                <span>FastMart</span>
+            </div>
+
+            <!-- Desktop Search -->
+            <div class="search-wrapper desktop-search">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search vegetables...">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <div class="search-results-dropdown" id="searchResults">
+                    <div id="resultsList"></div>
+                </div>
+            </div>
+
+            <!-- Desktop Menu -->
+           
+            <ul class="nav-menu">
+                <button class="nav-menu"  onclick="history.back(-1)">⬅ go back</button>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#groceries">Groceries</a></li>
+                <li><a href="index.html#vegetables" class="active">Vegetables</a></li>
+                <li><a href="index.html#fruits">Fruits</a></li>
+            </ul>
+
+            <!-- Icons -->
+            <div class="nav-icons">
+                <button class="icon-btn mobile-search-icon" id="mobileSearchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="icon-btn" id="cartBtn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge" id="cartCount">0</span>
+                </button>
+                <button class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Search Area -->
+        <div class="mobile-search-wrapper" id="mobileSearchWrapper">
+            <input type="text" id="mobileSearchInput" class="mobile-search-input" placeholder="Search vegetables...">
+            <button class="mobile-search-submit">
+                <i class="fas fa-search"></i>
+            </button>
+            <button id="mobileSearchClose" class="mobile-search-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Search Results -->
+        <div class="mobile-search-results" id="mobileSearchResults">
+            <div id="mobileResultsList"></div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-menu-link">Home</a>
+            <a href="index.html#groceries" class="mobile-menu-link">Groceries</a>
+            <a href="index.html#vegetables" class="mobile-menu-link">Vegetables</a>
+            <a href="index.html#fruits" class="mobile-menu-link">Fruits</a>
+        </div>
+    </nav>
+
+
+    <!-- =========================
+         VEGETABLES CATALOGUE
+    ========================= -->
+    <div class="containerA my-4">
+        <div class="heading text-center my-4">
+            <h2
+                style="background: linear-gradient(135deg, #0f172a 0%, #2563eb 35%, #7c3aed 70%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; ">
+                Fresh Vegetables Market</h2>  
+        </div>
+
+        <div class="box d-flex flex-wrap justify-content-center">
+            <!-- Vegetable 1: Potato -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJg4few-oaxMZCF07YkQNB4VPgRv_RWetgFR_2y5sEYw&s=10"
+                        alt="Potato">
+                </div>
+                <div class="details">
+                    <h3>Potato</h3>
+                    <p class="price">₹30/kg</p>
+                </div>
+            </div>
+
+            <!-- Vegetable 2: Tomato -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq_gE0KSjPPQ9-ucTIOnM7ZzVLI9Hx-_XWERQHYtnbHQ&s=10"
+                        alt="Tomato">
+                </div>
+                <div class="details">
+                    <h3>Tomato</h3>
+                    <p class="price">₹40/kg</p>
+                </div>
+            </div>
+
+            <!-- Vegetable 3: Onion -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-_AASdasNhqRoAJGnFPv2ftmqYHevLkDnArQFrh-CTQ&s=10"
+                        alt="Onion">
+                </div>
+                <div class="details">
+                    <h3>Onion</h3>
+                    <p class="price">₹35/kg</p>
+                </div>
+            </div>
+
+            <!-- Vegetable 4: Carrot -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl1R53lsnPXQ8aJNaxEKZmFo6dMc2NQx_wa7CNKdg62Q&s=10"
+                        alt="Carrot">
+                </div>
+                <div class="details">
+                    <h3>Carrot</h3>
+                    <p class="price">₹50/kg</p>
+                </div>
+            </div>
+
+            <!-- Vegetable 5: Cabbage -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY2ty1K4feGvGc-OGQvdFpT8tCPBHJLU1epS-A4BwLSQ&s=10"
+                        alt="Cabbage">
+                </div>
+                <div class="details">
+                    <h3>Cabbage</h3>
+                    <p class="price">₹25/kg</p>
+                </div>
+            </div>
+
+            <!-- Vegetable 6: Chilli -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcQBP7EPIvjGZIdUqFTUargb0s6HG8zSWXlI-z3cbNrA&s=10"
+                        alt="Chilli">
+                </div>
+                <div class="details">
+                    <h3>Chilli</h3>
+                    <p class="price">₹60/kg</p>
+                </div>
+            </div>
+
+            <!-- Vegetable 7: Cauliflower -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAdvd65y45I_CZd_8SrBnLaDLAWUjJpo_B13lCPysQsQ&s=10"
+                        alt="Cauliflower">
+                </div>
+                <div class="details">
+                    <h3>Cauliflower</h3>
+                    <p class="price">₹45/kg</p>
+                </div>
+            </div>
+
+            <!-- Vegetable 8: Cucumber -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHgWtXzTpxU5n8VOesvwgyH3C0NRs0MWN2iyDvtI7lgw&s"
+                        alt="Cucumber">
+                </div>
+                <div class="details">
+                    <h3>Cucumber</h3>
+                    <p class="price">₹30/kg</p>
+                </div>
+            </div>
+
+            <!-- NEW Vegetable 9: Garlic -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-BhK4CK_xf060SK1cGJnuhdRlDhFmEX2GVkkyzqar0w&s=10"
+                        alt="Garlic">
+                </div>
+                <div class="details">
+                    <h3>Garlic (Lahsun)</h3>
+                    <p class="price">₹180/kg</p>
+                </div>
+            </div>
+
+            <!-- NEW Vegetable 10: Ginger -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoULYd8tLrXG5jtpwewia6WvKqE2Io_mlmLIq0abcRng&s=10"
+                        alt="Ginger">
+                </div>
+                <div class="details">
+                    <h3>Ginger (Adrak)</h3>
+                    <p class="price">₹140/kg</p>
+                </div>
+            </div>
+
+            <!-- NEW Vegetable 11: Capsicum -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQW10YX4KiXL_6jMHm1xjuW0hcmpxpC2mniRvNqLuE8OBR6qMEfAXj1yc&s=10"
+                        alt="Capsicum">
+                </div>
+                <div class="details">
+                    <h3>Capsicum</h3>
+                    <p class="price">₹80/kg</p>
+                </div>
+            </div>
+
+            <!-- NEW Vegetable 12: Eggplant -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToabx1XlcH-MdHajKRItkZ0zL23U8zCXaXSGeo9qd61IaVRYVXnqMioGU&s=10"
+                        alt="Eggplant">
+                </div>
+                <div class="details">
+                    <h3>Eggplant (Brinjal)</h3>
+                    <p class="price">₹45/kg</p>
+                </div>
+            </div>
+
+            <!-- NEW Vegetable 13: Lady Finger -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIQxPqzQx65CloEXqEYrwbKcNeDG2BM-sy5-KmhTGvZA&s=10"
+                        alt="Lady Finger">
+                </div>
+                <div class="details">
+                    <h3>Lady Finger</h3>
+                    <p class="price">₹55/kg</p>
+                </div>
+            </div>
+
+            <!-- NEW Vegetable 14: Spinach -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHrYfqvYzFJ8dbW5jOjA0KGpdKh1207LKB-1rKvxNOJQ&s=10"
+                        alt="Spinach">
+                </div>
+                <div class="details">
+                    <h3>Spinach (Palak)</h3>
+                    <p class="price">₹20/bunch</p>
+                </div>
+            </div>
+
+            <!-- NEW Vegetable 15: Green Peas -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtTxXG3RzqUK8umiul9rrBnZh63aWkeBy1SZOEsEFx7A&s=10"
+                        alt="Green Peas">
+                </div>
+                <div class="details">
+                    <h3>Green Peas</h3>
+                    <p class="price">₹90/kg</p>
+                </div>
+            </div>
+
+            <!-- NEW Vegetable 16: Lemon -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEbibLQHOgFsVEgfdAcAGXA65Lozf3WQLOpmajH3ZDHQ&s=10"
+                        alt="Lemon">
+                </div>
+                <div class="details">
+                    <h3>Lemon (Nimbu)</h3>
+                    <p class="price">₹80/kg</p>
+                </div>
+            </div>
+        </div>
+         <button class="filter-pill"  onclick="history.back(-1)">⬅ go back</button>
+    </div>
+
+
+    <!--=========== Footer Section ===========-->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>FastMart</h4>
+                    <p>Your premium shopping destination and fresh groceries items and more.</p>
+                    <p style="font-family: cursive;">𒆜𝓐𝓻𝓴𒆜</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="all-items.html">Products</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="#">Track Order</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 FastMart. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- =========================
+         CART DRAWER
+    ========================= -->
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="drawer-overlay" id="drawer-overlay"></div>
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <h2>Shopping Cart</h2>
+                <button id="close-drawer-btn" class="close-btn">✕</button>
+            </div>
+            <div id="cart-items-container" class="drawer-body">
+                <p class="empty-msg">Your cart is empty.</p>
+            </div>
+            <div class="drawer-footer">
+                <h3>Total : <span id="cart-total-price">₹0</span></h3>
+                <button class="checkout-btn">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

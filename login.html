@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Login & Register - FastMart</title>
+
+    <style>
+        /* Modern Dual sliding Split-panel layout for Login */
+        .login-body {
+            background-color: #f1f3f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 80vh;
+            margin: 40px 0;
+        }
+
+        .auth-container {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+            width: 768px;
+            max-width: 100%;
+            min-height: 480px;
+        }
+
+        .form-container {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            transition: all 0.6s ease-in-out;
+        }
+
+        .sign-in-container {
+            left: 0;
+            width: 50%;
+            z-index: 2;
+        }
+
+        .auth-container.right-panel-active .sign-in-container {
+            transform: translateX(100%);
+        }
+
+        .sign-up-container {
+            left: 0;
+            width: 50%;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .auth-container.right-panel-active .sign-up-container {
+            transform: translateX(100%);
+            opacity: 1;
+            z-index: 5;
+            animation: show 0.6s;
+        }
+
+        @keyframes show {
+            0%, 49.9% { opacity: 0; z-index: 1; }
+            50%, 100% { opacity: 1; z-index: 5; }
+        }
+
+        .overlay-container {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            transition: transform 0.6s ease-in-out;
+            z-index: 100;
+        }
+
+        .auth-container.right-panel-active .overlay-container{
+            transform: translateX(-100%);
+        }
+
+        .overlay {
+            background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: 0 0;
+            color: #FFFFFF;
+            position: relative;
+            left: -100%;
+            height: 100%;
+            width: 200%;
+            transform: translateX(0);
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .auth-container.right-panel-active .overlay {
+            transform: translateX(50%);
+        }
+
+        .overlay-panel {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 0 40px;
+            text-align: center;
+            top: 0;
+            height: 100%;
+            width: 50%;
+            transform: translateX(0);
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .overlay-left {
+            transform: translateX(-20%);
+        }
+
+        .auth-container.right-panel-active .overlay-left {
+            transform: translateX(0);
+        }
+
+        .overlay-right {
+            right: 0;
+            transform: translateX(0);
+        }
+
+        .auth-container.right-panel-active .overlay-right {
+            transform: translateX(20%);
+        }
+
+        .auth-form {
+            background-color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 0 40px;
+            height: 100%;
+            text-align: center;
+        }
+
+        .auth-form input {
+            background-color: #eee;
+            border: none;
+            padding: 12px 15px;
+            margin: 8px 0;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .auth-form input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+
+        .ghost-btn {
+            background-color: transparent;
+            border-color: #FFFFFF;
+            color: white;
+            border: 1px solid white;
+            border-radius: 20px;
+            padding: 10px 24px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 80ms ease-in;
+            cursor: pointer;
+        }
+
+        .ghost-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Responsive Layout Collapse */
+        @media (max-width: 768px) {
+            .auth-container {
+                width: 90%;
+                min-height: auto;
+            }
+            .form-container {
+                position: relative;
+                width: 100% !important;
+                height: auto;
+            }
+            .sign-in-container, .sign-up-container {
+                display: none;
+                padding: 40px 10px;
+            }
+            .sign-in-container.active-mobile, .sign-up-container.active-mobile {
+                display: block;
+            }
+            .overlay-container {
+                display: none;
+            }
+            .auth-form {
+                padding: 30px 15px;
+            }
+            .mobile-toggle-btn {
+                display: block !important;
+                background: none;
+                border: none;
+                color: var(--primary-color);
+                font-weight: 600;
+                margin-top: 15px;
+                text-decoration: underline;
+                cursor: pointer;
+            }
+        }
+
+        .mobile-toggle-btn {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+    <nav class="navbar">
+        <div class="nav-wrapper">
+            <!-- Logo -->
+            <div class="nav-logo" onclick="window.location.href='index.html'">
+                <i class="fas fa-shopping-bag"></i>
+                <span>FastMart</span>
+            </div>
+
+            <!-- Desktop Search -->
+            <div class="search-wrapper desktop-search">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search products...">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <div class="search-results-dropdown" id="searchResults">
+                    <div id="resultsList"></div>
+                </div>
+            </div>
+
+            <!-- Desktop Menu -->
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="all-items.html">Products</a></li>
+                
+                <!-- More Dropdown -->
+                <li class="nav-dropdown">
+                    <a href="#" class="dropdown-trigger">More <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="login.html" id="nav-login-btn">Login / Register</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Icons -->
+            <div class="nav-icons">
+                <button class="icon-btn mobile-search-icon" id="mobileSearchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="icon-btn" id="cartBtn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge" id="cartCount">0</span>
+                </button>
+                <button class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Search Area -->
+        <div class="mobile-search-wrapper" id="mobileSearchWrapper">
+            <input type="text" id="mobileSearchInput" class="mobile-search-input" placeholder="Search products...">
+            <button class="mobile-search-submit">
+                <i class="fas fa-search"></i>
+            </button>
+            <button id="mobileSearchClose" class="mobile-search-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Search Results -->
+        <div class="mobile-search-results" id="mobileSearchResults">
+            <div id="mobileResultsList"></div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-menu-link">Home</a>
+            <a href="all-items.html" class="mobile-menu-link">Products</a>
+            <a href="index.html#about" class="mobile-menu-link">About Us</a>
+            <a href="contact.html" class="mobile-menu-link">Contact Us</a>
+            <a href="login.html" class="mobile-menu-link" id="mobile-login-btn">Login / Register</a>
+        </div>
+    </nav>
+
+
+    <!-- =========================
+         AUTHENTICATION MODULE
+    ========================= -->
+    <div class="login-body">
+        <div class="auth-container" id="auth-container">
+            
+            <!-- Sign Up Panel -->
+            <div class="form-container sign-up-container active-mobile" id="sign-up-pane">
+                <form class="auth-form" id="register-form">
+                    <h2 class="fw-bold mb-3">Create Account</h2>
+                    <input type="text" id="reg-name" placeholder="Name" required />
+                    <input type="email" id="reg-email" placeholder="Email" required />
+                    <input type="password" id="reg-pass" placeholder="Password" required />
+                    <button type="submit" class="modal-checkout-btn mt-3">Sign Up</button>
+                    <button type="button" class="mobile-toggle-btn" id="mobile-to-login">Already have an account? Sign In</button>
+                </form>
+            </div>
+
+            <!-- Sign In Panel -->
+            <div class="form-container sign-in-container" id="sign-in-pane">
+                <form class="auth-form" id="login-form">
+                    <h2 class="fw-bold mb-3">Sign in</h2>
+                    <input type="email" id="login-email" placeholder="Email" required />
+                    <input type="password" id="login-pass" placeholder="Password" required />
+                    <button type="submit" class="modal-checkout-btn mt-3">Sign In</button>
+                    <button type="button" class="mobile-toggle-btn" id="mobile-to-register">Don't have an account? Sign Up</button>
+                </form>
+            </div>
+
+            <!-- Desktop Sliding Overlay -->
+            <div class="overlay-container">
+                <div class="overlay">
+                    <div class="overlay-panel overlay-left">
+                        <h2 class="fw-bold">Welcome Back!</h2>
+                        <p class="mt-2 mb-4">To stay connected with us please login with your personal info</p>
+                        <button class="ghost-btn" id="signIn">Sign In</button>
+                    </div>
+                    <div class="overlay-panel overlay-right">
+                        <h2 class="fw-bold">Hello, Friend!</h2>
+                        <p class="mt-2 mb-4">Enter your personal details and start shopping with us</p>
+                        <button class="ghost-btn" id="signUp">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!--=========== Footer Section ===========-->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>FastMart</h4>
+                    <p>Your premium shopping destination and fresh groceries items and more.</p>
+                    <p style="font-family: cursive;">𒆜𝓐𝓻𝓴𒆜</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="all-items.html">Products</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="#">Track Order</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 FastMart. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- =========================
+         CART DRAWER
+    ========================= -->
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="drawer-overlay" id="drawer-overlay"></div>
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <h2>Shopping Cart</h2>
+                <button id="close-drawer-btn" class="close-btn">✕</button>
+            </div>
+            <div id="cart-items-container" class="drawer-body">
+                <p class="empty-msg">Your cart is empty.</p>
+            </div>
+            <div class="drawer-footer">
+                <h3>Total : <span id="cart-total-price">₹0</span></h3>
+                <button class="checkout-btn">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        // Desktop panel toggle animation controls
+        const signUpButton = document.getElementById('signUp');
+        const signInButton = document.getElementById('signIn');
+        const container = document.getElementById('auth-container');
+
+        signUpButton.addEventListener('click', () => {
+            container.classList.add("right-panel-active");
+        });
+
+        signInButton.addEventListener('click', () => {
+            container.classList.remove("right-panel-active");
+        });
+
+        // Mobile fallback toggle controls
+        const mobToLogin = document.getElementById("mobile-to-login");
+        const mobToReg = document.getElementById("mobile-to-register");
+        const signUpPane = document.getElementById("sign-up-pane");
+        const signInPane = document.getElementById("sign-in-pane");
+
+        mobToLogin.addEventListener("click", () => {
+            signUpPane.classList.remove("active-mobile");
+            signInPane.classList.add("active-mobile");
+        });
+
+        mobToReg.addEventListener("click", () => {
+            signInPane.classList.remove("active-mobile");
+            signUpPane.classList.add("active-mobile");
+        });
+
+        // Sign In Action submit listener
+        document.getElementById("login-form").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const email = document.getElementById("login-email").value;
+            const username = email.split('@')[0]; // Extract name prefix
+
+            localStorage.setItem("fastmart_logged_in", "true");
+            localStorage.setItem("fastmart_username", username);
+
+            // Redirect back to home
+            window.location.href = "index.html";
+        });
+
+        // Register Action submit listener
+        document.getElementById("register-form").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const name = document.getElementById("reg-name").value;
+
+            localStorage.setItem("fastmart_logged_in", "true");
+            localStorage.setItem("fastmart_username", name);
+
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+
+</html>
