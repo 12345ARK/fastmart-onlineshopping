@@ -10,6 +10,8 @@ const mobileSearchInput = document.getElementById("mobileSearchInput");
 const mobileSearchResults = document.getElementById("mobileSearchResults");
 const mobileResultsList = document.getElementById("mobileResultsList");
 
+document.getElementById('continueShopping').addEventListener('click', () => this.toggleCart());
+
 // ============= HAMBURGER MENU TOGGLE =============
 hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('active');
