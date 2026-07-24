@@ -1211,7 +1211,7 @@ body {
 }
 
 .checkout-btn {
-  width: 100%;
+  width: 49%;
   padding: 12px;
   background: var(--primary-color);
   color: #fff;
