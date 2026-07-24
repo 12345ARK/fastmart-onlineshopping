@@ -1226,6 +1226,23 @@ body {
   background: #e05353;
 }
 
+.checkout-btn2 {
+  width: 49%;
+  padding: 12px;
+  background:#1cff0b;
+  color: #000000;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 1s ease;
+}
+
+.checkout-btn2:hover {
+  background: #ffffff;
+  box-shadow: inset 0px 0px 5px black;
+}
+
 .cart-item {
   display: flex;
   align-items: center;
