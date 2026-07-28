@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>All Items - FastMart</title>
+
+    <style>
+        .heading {
+            /* width: 40px; */
+            /* margin-bottom: 10px; */
+            font-size: xx-large;
+        }
+
+        /* Specific Styles for Filtering on the All Items page */
+        .filter-section {
+            background: rgb(173, 173, 173);
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 70px;
+            z-index: 99;
+            box-shadow: 0 4px 6px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-wrapper {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            white-space: nowrap;
+            /* padding: 5px 15px; */
+            justify-content: center;
+        }
+
+        /* Hide scrollbar on category pills container */
+        .filter-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-pill {
+            background: var(--light-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+            padding: 8px 22px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-pill.active,
+        .filter-pill:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-1px);
+        }
+
+        /* Smooth animation when items are hidden/shown */
+        .all-items-grid .card,
+        .all-items-grid .cardB {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .item-hidden {
+            opacity: 0 !important;
+            transform: scale(0.8) !important;
+            pointer-events: none;
+            position: absolute;
+            width: 0 !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .filter-section {
+                top: 60px;
+            }
+
+            .filter-wrapper {
+                justify-content: flex-start;
+            }
+        }
+
+        button {
+            color: black;
+            background-color: none;
+            border: none;
+        }
+
+       
+    </style>
+</head>
+
+<body class="bg-light">
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+    <nav class="navbar">
+        <div class="nav-wrapper">
+            <!-- Logo -->
+            <div class="nav-logo" onclick="window.location.href='index.html'">
+                <i class="fas fa-shopping-bag"></i>
+                <span>FastMart</span>
+            </div>
+
+            <!-- Desktop Search -->
+            <div class="search-wrapper desktop-search">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search catalog...">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <div class="search-results-dropdown" id="searchResults">
+                    <div id="resultsList"></div>
+                </div>
+            </div>
+
+            <!-- Desktop Menu -->
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#groceries">Groceries</a></li>
+                <li><a href="index.html#vegetables">Vegetables</a></li>
+                <li><a href="index.html#fruits">Fruits</a></li>
+            </ul>
+
+            <!-- Icons -->
+            <div class="nav-icons">
+                <button class="icon-btn mobile-search-icon" id="mobileSearchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="icon-btn" id="cartBtn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge" id="cartCount">0</span>
+                </button>
+                <button class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Search Area -->
+        <div class="mobile-search-wrapper" id="mobileSearchWrapper">
+            <input type="text" id="mobileSearchInput" class="mobile-search-input" placeholder="Search catalog...">
+            <button class="mobile-search-submit">
+                <i class="fas fa-search"></i>
+            </button>
+            <button id="mobileSearchClose" class="mobile-search-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Search Results -->
+        <div class="mobile-search-results" id="mobileSearchResults">
+            <div id="mobileResultsList"></div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-menu-link">Home</a>
+            <a href="index.html#groceries" class="mobile-menu-link">Groceries</a>
+            <a href="index.html#vegetables" class="mobile-menu-link">Vegetables</a>
+            <a href="index.html#fruits" class="mobile-menu-link">Fruits</a>
+        </div>
+    </nav>
+
+
+    <!-- =========================
+         CATEGORY PILLS FILTER
+    ========================= -->
+    <div class="filter-section">
+        <div class="filter-wrapper">
+            <button class="filter-pill active" data-filter="all">All Items(82)</button>
+            <button class="filter-pill" data-filter="fruits">Fruits(18)</button>
+            <button class="filter-pill" data-filter="vegetables">Vegetables(21)</button>
+            <button class="filter-pill" data-filter="spices">Spices(19)</button>
+            <button class="filter-pill" data-filter="snacks">Snacks & Treats(12)</button>
+            <button class="filter-pill" data-filter="Others">Others(12)</button>
+            <button class="filter-pill" onclick="history.back(-1)">⬅ go back</button>
+        </div>
+    </div>
+
+
+    <!-- =========================
+         ALL ITEMS CONTAINER
+    ========================= -->
+    <div class="container my-4">
+        <div class="heading text-center mb-4">
+            <h3 id="gallery-title"
+                style="background: linear-gradient(135deg, #0f172a 0%, #2563eb 35%, #7c3aed 70%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; ">
+                All Items </h3>
+            <!-- <h1>All Items</h1> -->
+
+        </div>
+
+        <div class="box all-items-grid d-flex flex-wrap justify-content-center">
+
+            <!-- --- Fruits Category --- -->
+            <div class="card" data-category="fruits">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2wDXfk9-zgVxSk-z-MqjgIA7jwx3fHBZ91J-JWUaPIg&s=10"
+                        alt="Apple">
+                </div>
+                <div class="details">
+                    <h3>Apple</h3>
+                    <p class="price">₹120/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="fruits">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8KwARHg9glIy29RMCS9x2h-tN0vG84FZevfey8--ckA&s=10"
+                        alt="Banana">
+                </div>
+                <div class="details">
+                    <h3>Banana</h3>
+                    <p class="price">₹60/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="fruits">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2HGhdyMySaxcTlACSo7-bDFk8WVUXaH1raChHF-Swug&s=10"
+                        alt="Mango">
+                </div>
+                <div class="details">
+                    <h3>Mango</h3>
+                    <p class="price">₹150/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="fruits">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSh8i9lqvcPmxGg9W-uek87NZhsiQiqFNSMMUphixtsXw&s=10"
+                        alt="Grapes">
+                </div>
+                <div class="details">
+                    <h3>Grapes</h3>
+                    <p class="price">₹80/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="fruits">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTq0nhZu3MCX25eLb5ICoHxJpG-aPHuvThztisgZOgqA&s=10"
+                        alt="Kiwi">
+                </div>
+                <div class="details">
+                    <h3>Kiwi</h3>
+                    <p class="price">₹200/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="fruits">
+                <div class="image">
+                    <a href=""><img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3mnpsg1yzeZLXVRwPdhvwuX5DDfDuMgQYZDhr4I8Uow&s=10"
+                            alt="Orange"></a>
+                </div>
+                <div class="details">
+                    <h3>Orange</h3>
+                    <p class="price">₹70/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="fruits">
+                <div class="image">
+                    <a href=""><img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4e3CVEXTmgCUtA6qftODxmlu-8oyVaFxD05bBHkflGQ&s=10"
+                            alt="Papaya"></a>
+                </div>
+                <div class="details">
+                    <h3>Papaya</h3>
+                    <p class="price">₹50/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="fruits">
+                <div class="image">
+                    <a href=""><img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTioS5epVMuMK7yOt-Qqw29_yOwGm3c_8kF9j6ZdnYwRA&s=10"
+                            alt="Pomegranate"></a>
+                </div>
+                <div class="details">
+                    <h3>Pomegranate</h3>
+                    <p class="price">₹140/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="fruits">
+                <div class="image">
+                    <a href=""><img
+                            src="https://healthybuddha.in/image/cache/catalog/DragonFruit-cutout-sm_grande-500x515.png"
+                            alt="Dragon Fruit"></a>
+                </div>
+                <div class="details">
+                    <h3>Dragon Fruit - 1 Piece</h3>
+                    <p class="price">₹100/Piece</p>
+                </div>
+            </div>
+            <div class="card" data-category="fruits">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWBaxxFynRjCIqRipiJ6ZkvzFOUqDM0yf79PSjTtLydD-MV4u5TyeQ8ANU&s=10"
+                        alt="Strawberry">
+                </div>
+                <div class="details">
+                    <h3>Strawberry</h3>
+                    <p class="price">₹140/box</p>
+                </div>
+            </div>
+
+            <div class="card" data-category="fruits">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWIezy-LqXvzVLLJgS6TivUQMtiEPRRxOvt8LlOMds2g&s=10"
+                        alt="Watermelon">
+                </div>
+                <div class="details">
+                    <h3>Watermelon</h3>
+                    <p class="price">₹40/kg</p>
+                </div>
+            </div>
+
+            <div class="card" data-category="fruits">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNPHRpe8xw-odJCtj5GNg9lVwuVP6akx_RuGXTRfXwiw&s=10"
+                        alt="Pineapple">
+                </div>
+                <div class="details">
+                    <h3>Pineapple</h3>
+                    <p class="price">₹80/piece</p>
+                </div>
+            </div>
+
+            <div class="card" data-category="fruits">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqVpI5VTNncRdimXbair9dWE-cEXF_gGFd7icFD5HJ4w&s=10"
+                        alt="Avocado">
+                </div>
+                <div class="details">
+                    <h3>Avocado</h3>
+                    <p class="price">₹250/kg</p>
+                </div>
+            </div>
+
+            <div class="card" data-category="fruits">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5WFQxBaJqfrUyU3lbhjCjV6dygVPd7MxzNRrIgKvS2A&s=10"
+                        alt="Blueberries">
+                </div>
+                <div class="details">
+                    <h3>Blueberries</h3>
+                    <p class="price">₹150/box</p>
+                </div>
+            </div>
+
+            <div class="card" data-category="fruits">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLfF9GLmQ0TVHBeJ3mmtAS45UTCelAJNtrCneQgDxGQ&s=10"
+                        alt="Peach">
+                </div>
+                <div class="details">
+                    <h3>Peach</h3>
+                    <p class="price">₹120/kg</p>
+                </div>
+            </div>
+
+            <div class="card" data-category="fruits">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ35KGRA_VCPDXckmEBUF0cY8IuBbtw7pi1K45gX_nUiw&s=10"
+                        alt="Cherry">
+                </div>
+                <div class="details">
+                    <h3>Cherry</h3>
+                    <p class="price">₹300/kg</p>
+                </div>
+            </div>
+
+            <div class="card" data-category="fruits">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV3-2E83RLuf4aSCXxIY03aZ-gZgPQb6PuXtrPl3sxOQ&s=10"
+                        alt="Pear">
+                </div>
+                <div class="details">
+                    <h3>Pear</h3>
+                    <p class="price">₹90/kg</p>
+                </div>
+            </div>
+
+            <div class="card" data-category="fruits">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4uWnTsrdH4A7K0JyAzN9tThHBy0V8KJrNEXq9Un8ChA&s=10"
+                        alt="Coconut">
+                </div>
+                <div class="details">
+                    <h3>Coconut</h3>
+                    <p class="price">₹50/piece</p>
+                </div>
+            </div>
+
+            <!-- --- Vegetables Category --- -->
+
+            <div class="card" data-category="vegetables">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJg4few-oaxMZCF07YkQNB4VPgRv_RWetgFR_2y5sEYw&s=10"
+                        alt="Potato">
+                </div>
+                <div class="details">
+                    <h3>Potato</h3>
+                    <p class="price">₹30/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="vegetables">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq_gE0KSjPPQ9-ucTIOnM7ZzVLI9Hx-_XWERQHYtnbHQ&s=10"
+                        alt="Tomato">
+                </div>
+                <div class="details">
+                    <h3>Tomato</h3>
+                    <p class="price">₹40/kg</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHrYfqvYzFJ8dbW5jOjA0KGpdKh1207LKB-1rKvxNOJQ&s=10"
+                        alt="Spinach">
+                </div>
+                <div class="details">
+                    <h3>Spinach (Palak)</h3>
+                    <p class="price">₹20/bunch</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtTxXG3RzqUK8umiul9rrBnZh63aWkeBy1SZOEsEFx7A&s=10"
+                        alt="Green Peas">
+                </div>
+                <div class="details">
+                    <h3>Green Peas</h3>
+                    <p class="price">₹90/kg</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEbibLQHOgFsVEgfdAcAGXA65Lozf3WQLOpmajH3ZDHQ&s=10"
+                        alt="Lemon">
+                </div>
+                <div class="details">
+                    <h3>Lemon (Nimbu)</h3>
+                    <p class="price">₹80/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="vegetables">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-_AASdasNhqRoAJGnFPv2ftmqYHevLkDnArQFrh-CTQ&s=10"
+                        alt="Onion">
+                </div>
+                <div class="details">
+                    <h3>Onion</h3>
+                    <p class="price">₹35/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="vegetables">
+                <div class="image">
+                    <a href=""><img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoULYd8tLrXG5jtpwewia6WvKqE2Io_mlmLIq0abcRng&s=10"
+                            alt="Ginger"></a>
+                </div>
+                <div class="details">
+                    <h3>Ginger</h3>
+                    <p class="price">₹100/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="vegetables">
+                <div class="imageB">
+                    <a href=""><img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY2ty1K4feGvGc-OGQvdFpT8tCPBHJLU1epS-A4BwLSQ&s=10"
+                            alt="Cabbage"></a>
+                </div>
+                <div class="details">
+                    <h3>Cabbage</h3>
+                    <p class="price">₹25/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="vegetables">
+                <div class="imageB">
+                    <a href=""><img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmfAJrYLAuPexT6huMctE7V2gU74StPwwA2LEohEM04Q&s=10"
+                            alt="Garlic"></a>
+                </div>
+                <div class="details">
+                    <h3>Garlic</h3>
+                    <p class="price">₹95/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="vegetables">
+                <div class="image">
+                    <a href=""><img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCilJgT6rNhuRmOS1YZVOSWqqDBGHO7Sd7madEUbrj9w&s=10"
+                            alt="Green Chilli"></a>
+                </div>
+                <div class="details">
+                    <h3>Green Chilli</h3>
+                    <p class="price">₹50/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="vegetables">
+                <div class="image">
+                    <a href=""><img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZeybmN0u64anAebr3NpUhqslZ-Z7iFsoWrUAg9tmdvg&s=10"
+                            alt="Parwal"></a>
+                </div>
+                <div class="details">
+                    <h3>Parwal, 500 gm</h3>
+                    <p class="price">₹20.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="vegetables">
+                <div class="imageB">
+                    <a href=""><img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcQBP7EPIvjGZIdUqFTUargb0s6HG8zSWXlI-z3cbNrA&s=10"
+                            alt="Red Chilli"></a>
+                </div>
+                <div class="details">
+                    <h3>Red Chilli</h3>
+                    <p class="price">₹60/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="vegetables">
+                <div class="imageB">
+                    <a href=""><img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAdvd65y45I_CZd_8SrBnLaDLAWUjJpo_B13lCPysQsQ&s=10"
+                            alt="Cauliflower"></a>
+                </div>
+                <div class="details">
+                    <h3>Cauliflower</h3>
+                    <p class="price">₹45/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="vegetables">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl1R53lsnPXQ8aJNaxEKZmFo6dMc2NQx_wa7CNKdg62Q&s=10"
+                        alt="Carrot">
+                </div>
+                <div class="details">
+                    <h3>Carrot</h3>
+                    <p class="price">₹50/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="vegetables">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHgWtXzTpxU5n8VOesvwgyH3C0NRs0MWN2iyDvtI7lgw&s"
+                        alt="Cucumber">
+                </div>
+                <div class="details">
+                    <h3>Cucumber</h3>
+                    <p class="price">₹30/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="vegetables">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSCgEHSSir3wnwrjfVUlz9ORznntLnan1MZUr4X0pywA&s=10"
+                        alt="Lady finger">
+                </div>
+                <div class="details">
+                    <h3> Lady finger</h3>
+                    <p class="price">₹40/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="vegetables">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj4UaMDC2G4d3HPFi9wFhESYsQ3sLmOxBm5x_xv-BS5Q&s=10"
+                        alt="Brinjal">
+                </div>
+                <div class="details">
+                    <h3>Brinjal</h3>
+                    <p class="price">₹44/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="vegetables">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7VKzhJ6-mTm9_7OB6z8tNl-v4we4icN832wYFTzuLiA&s=10"
+                        alt="Mushrooms">
+                </div>
+                <div class="details">
+                    <h3>Mushrooms (200gm)</h3>
+                    <p class="price">₹50.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="vegetables">
+                <div class="image">
+                    <img src="https://www.kottakkal.shop/cdn/shop/files/bottlegourd_600x.jpg?v=1721673624"
+                        alt="Organic Bottle Gourd">
+                </div>
+                <div class="details">
+                    <h3>Organic Bottle Gourd ( 1 piece)</h3>
+                    <p class="price">₹20.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="vegetables">
+                <div class="image">
+                    <img src="https://andamangreengrocers.com/wp-content/uploads/2021/12/Green-Capsicum.jpg"
+                        alt="Green Capsicum">
+                </div>
+                <div class="details">
+                    <h3>Green Capsicum | Shimla Mirch</h3>
+                    <p class="price">₹42.00/kg</p>
+                </div>
+            </div>
+            <div class="card" data-category="vegetables">
+                <div class="image">
+                    <img src="https://images.jdmagicbox.com/quickquotes/images_main/dhaniya-patta-2217644646-fj4lakfz.jpg"
+                        alt="Dhaniya Patta">
+                </div>
+                <div class="details">
+                    <h3>Dhaniya Patta</h3>
+                    <p class="price">₹60.00/kg</p>
+                </div>
+            </div>
+
+            <!-- --- Spices Category --- -->
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIKOTyYO0J7uq53ppGrChuoUPOnbOOyjMp-NUVFKhCLA&s=10"
+                        alt="Cardamom">
+                </div>
+                <div class="details">
+                    <h3>Cardamom</h3>
+                    <p class="price">₹250/100g</p>
+                </div>
+            </div>
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4uiHUYavIdANKpffhe99fuTrdXBvOtLdI34pC57w8Xg&s=10"
+                        alt="Turmeric">
+                </div>
+                <div class="details">
+                    <h3>Turmeric (Haldi)</h3>
+                    <p class="price">₹45/250g</p>
+                </div>
+            </div>
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTst-XEqQAs5-4ZNi0A7mLa2308gLQLcsDhmNbAxL2Wqg&s=10"
+                        alt="Black Pepper">
+                </div>
+                <div class="details">
+                    <h3>Black Pepper (Kali Mirch)</h3>
+                    <p class="price">₹90/100g</p>
+                </div>
+            </div>
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://weaveskart.com/wp-content/uploads/2023/05/Premium-Quality-Single-Origin-Clove-Whole-8.jpg"
+                        alt="Clove Whole">
+                </div>
+                <div class="details">
+                    <h3> Clove Whole 100gm (Laung) </h3>
+                    <p class="price">₹80.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://www.tatanutrikorner.com/cdn/shop/files/Tata-Sampann---Fennel-Seed-100gm-_FOP-fococlipping-HD_5b5d066a-9522-4e0d-96dc-610f79b5d213_1.png?v=1748858411"
+                        alt="Whole Spices Fennel">
+                </div>
+                <div class="details">
+                    <h3>Tata Sampann Whole Spices Fennel (Sauf) 200g </h3>
+                    <p class="price">₹139/100g</p>
+                </div>
+            </div>
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShi4PSEJd-UInZKrKsgrAAxLw88LsLEo9dzN7OFeJcZQ&s=10"
+                        alt="Jeera Powder">
+                </div>
+                <div class="details">
+                    <h3>Jeera Powder</h3>
+                    <p class="price">₹48/100g</p>
+                </div>
+            </div>
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://www.tatanutrikorner.com/cdn/shop/files/cumin_100.png?v=1748858411"
+                        alt="Cumin Seed (Jeera)">
+                </div>
+                <div class="details">
+                    <h3>Tata Sampann Cumin Seed (Jeera) | Whole Spices, Natural Oils With Rich Aroma 100 g</h3>
+                    <p class="price">₹75.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://www.tatanutrikorner.com/cdn/shop/files/Tata-Sampann---Coriander-Whole-200gm-_FOP-removebg-preview_2.png?v=1748858411&width=1445"
+                        alt="Coriander/Dhaniya">
+                </div>
+                <div class="details">
+                    <h3>Tata Sampann Coriander/Dhaniya Whole with Natural Oils 200 g</h3>
+                    <p class="price">₹58.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://assets.hyperpure.com/data/images/products/916345133d74585bdeb210088abecb6e.png"
+                        alt="Coriander (Dhania) Powder">
+                </div>
+                <div class="details">
+                    <h3>Coriander (Dhania) Powder, 1 Kg</h3>
+                    <p class="price">₹194.25</p>
+                </div>
+            </div>
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://swastikspices.com/cdn/shop/files/swastik-coriander-powder-500g-front-_7.jpg?v=1761643311&width=1920"
+                        alt="Swastik Dhania Powder">
+                </div>
+                <div class="details">
+                    <h3>Swastik Dhania Powder 100 g</h3>
+                    <p class="price">₹38.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://images.jdmagicbox.com/quickquotes/images_main/kitchen-treasures-whole-spice-14-07-2022-35142-272053537-nvrsk859.jpg"
+                        alt="Black Pepper Powder 25g">
+                </div>
+                <div class="details">
+                    <h3> Black Pepper Powder 25g </h3>
+                    <p class="price">₹20.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://swastikspices.com/cdn/shop/files/swastik-turmeric-powder-100g-pack-_5.jpg?v=1761643417&width=1920"
+                        alt="Turmeric Powder">
+                </div>
+                <div class="details">
+                    <h3>Turmeric/Haldi Powder (100gm) </h3>
+                    <p class="price">₹78.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRisZeDKy0HI3QglJdNIMk8W5-02xUjyH9AVu5HHFSgrmuu7Z2aMb6njgg&s=10"
+                        alt="MDH Red Chilli Powder">
+                </div>
+                <div class="details">
+                    <h3>MDH Red Chilli Powder, Paper Box, 100 gm</h3>
+                    <p class="price">₹58.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://aapkabazar.co/_next/image?url=https%3A%2F%2Fimage.aapkabazar.co%2Fproduct%2F534%2F1684139708576.png%3Ftype%3Dwebp%26width%3D600&w=3840&q=75"
+                        alt="MDH Kashmiri Mirch ">
+                </div>
+                <div class="details">
+                    <h3>MDH Kashmiri Mirch 100 Gm - Rich Flavor & Colo</h3>
+                    <p class="price">₹90.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6hhUjSllBdTJQWDhncW1dBGolYWrgKPMXiVXpKFWWVtAIYFf6IMk1-uQ&s=10"
+                        alt="Everest Meat Masala ">
+                </div>
+                <div class="details">
+                    <h3>Everest Meat Masala 100 g</h3>
+                    <p class="price">₹96.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://m.media-amazon.com/images/I/71DsmjB6-uL.jpg" alt="Everest Kitchen King Masala">
+                </div>
+                <div class="details">
+                    <h3>Everest Kitchen King Masala, 50grams </h3>
+                    <p class="price">₹42.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTex1BH-60oW_UgIAGl8nFluP8oqlHZXaL8XgsTLQ1aEg&s"
+                        alt="Everest Sabji Masala">
+                </div>
+                <div class="details">
+                    <h3>Everest Sabji Masala 50g</h3>
+                    <p class="price">₹36.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://neelamfoodlandmumbai.com/cdn/shop/files/2426EVERESTGARAMMASALA100GM_1.jpg?v=1752070064"
+                        alt="Everest Garam Masala ">
+                </div>
+                <div class="details">
+                    <h3>Everest Garam Masala 100 g</h3>
+                    <p class="price">₹105.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="spices">
+                <div class="image">
+                    <img src="https://m.media-amazon.com/images/I/818NeuAEW9L._AC_UF894,1000_QL80_.jpg"
+                        alt="Natural Bay Leaves ">
+                </div>
+                <div class="details">
+                    <h3>THAKAR Natural Bay Leaves 25g | Tej Patta | Premium Dried Bay Leaf</h3>
+                    <p class="price">₹29.00</p>
+                </div>
+            </div>
+
+            <!-- --- Snacks & Treats Category --- -->
+            <div class="card" data-category="snacks">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXFuDkrzsaw_CZpDhnK0ES5fizjQdpvmt4mUhlhT684g&s=10"
+                        alt="Maggie">
+                </div>
+                <div class="details">
+                    <h3>Maggie</h3>
+                    <p class="price">₹14</p>
+                </div>
+            </div>
+            <div class="card" data-category="snacks">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJduhDpywHL0z7ICk7-u_hsu5yEJwtQhNE14wfkurydw&s=10"
+                        alt="Kurkure">
+                </div>
+                <div class="details">
+                    <h3>Kurkure</h3>
+                    <p class="price">₹20</p>
+                </div>
+            </div>
+            <div class="card" data-category="snacks">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs4efwngt6jW0QzJh5wLs8HbpsVf3aSHmyvPk5KQc5TA&s=10"
+                        alt="Dairy Milk">
+                </div>
+                <div class="details">
+                    <h3>Cadbury Dairy Milk Silk</h3>
+                    <p class="price">₹90</p>
+                </div>
+            </div>
+            <div class="card" data-category="snacks">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGN7yNa2CS09EFgagCIM2ipOgx8a5tpeCbf5zVhxMo3w&s=10"
+                        alt="Marie Gold">
+                </div>
+                <div class="details">
+                    <h3>Marie Gold</h3>
+                    <p class="price">₹45</p>
+                </div>
+            </div>
+            <div class="card" data-category="snacks">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb0umkrOtX42Bnjk1a8z8QMWVNdkB1ryNwcZ5FEywmYE_yUHLeNbwSPPw&s=10"
+                        alt="Munch">
+                </div>
+                <div class="details">
+                    <h3>NESTLE MUNCH CHOCOLATE WAFER BAR BOX 284.8g (32 Units) 8.9g/unit</h3>
+                    <p class="price">₹155.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="snacks">
+                <div class="image"><img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWz0wbsavZOb5kQdZzEUXSmAFsAKg7SOrouCgeezUq8Q&s=10"
+                        alt="Tiger Chocolate"></div>
+                <div class="details">
+                    <h3>Tiger Cream</h3>
+                    <p class="price">₹10</p>
+                </div>
+            </div>
+            <div class="card" data-category="snacks">
+                <div class="image"><img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR56JP7A3MaxjOA0zCV7S8aAwDyIQmQNbbLhXo5CWYxQQ&s=10"
+                        alt="Good Day Choco"></div>
+                <div class="details">
+                    <h3>Choco Chips</h3>
+                    <p class="price">₹30</p>
+                </div>
+            </div>
+            <div class="card" data-category="snacks">
+                <div class="image"><img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTn9n_9Wkopi0A1r6DNft3vX6qYdYmE-7UdovvKdg9SGg&s=10"
+                        alt="Good Day Butter"></div>
+                <div class="details">
+                    <h3>Good Day Butter</h3>
+                    <p class="price">₹20</p>
+                </div>
+            </div>
+            <div class="card" data-category="snacks">
+                <div class="image"><img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThO8zTyi6bD7RMzJxO8QI2IbQ67fa4RKX1TUtNvqKp3w&s=10"
+                        alt="Good Day Cashew"></div>
+                <div class="details">
+                    <h3>Good Day Cashew</h3>
+                    <p class="price">₹25</p>
+                </div>
+            </div>
+            <div class="card" data-category="snacks">
+                <div class="image"><img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAkCZFa_1TzEH7Ijdfjn_5N9NZ6tQce-BiwBIn0HVxPw&s=10"
+                        alt="Almond Pista"></div>
+                <div class="details">
+                    <h3>Almond Cookies</h3>
+                    <p class="price">₹30</p>
+                </div>
+            </div>
+            <div class="card" data-category="snacks">
+                <div class="image"><img
+                        src="https://www.bbassets.com/media/uploads/p/l/411241_3-britannia-britannia-marie-400-gm-pk-15.jpg"
+                        alt="Marie Gold"></div>
+                <div class="details">
+                    <h3>Marie Gold</h3>
+                    <p class="price">₹52</p>
+                </div>
+            </div>
+            <div class="card" data-category="snacks">
+                <div class="image"><img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLzuMWfse5P-N2YXH_cuWSaEgipuUtkLqjN1OIip5eqw&s=10"
+                        alt="Doodh Biscuits"></div>
+                <div class="details">
+                    <h3>Doodh Biscuit</h3>
+                    <p class="price">₹10</p>
+                </div>
+            </div>
+
+            <!-- --- Others --- -->
+            <div class="card" data-category="Others">
+                <div class="image">
+                    <img src="https://www.bbassets.com/media/uploads/p/l/212136_19-surf-excel-easy-wash-detergent-powder.jpg"
+                        alt="Surf Excel Easy Wash">
+                </div>
+                <div class="details">
+                    <h3>Surf Excel Easy Wash Detergent Powder 3 kg</h3>
+                    <p class="price">₹360.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="Others">
+                <div class="image">
+                    <img src="https://www.quickpantry.in/cdn/shop/products/surf-excel-quick-wash-detergent-powder-quick-pantry-2.jpg?v=1710538093"
+                        alt="Surf Excel Quick Wash">
+                </div>
+                <div class="details">
+                    <h3>Surf Excel Quick Wash Detergent Powder 500 g</h3>
+                    <p class="price">₹110.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="Others">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrOyhxJXGE7MuMZRcvHw0IXGjefKtjUTbxyK0ocOqX3ryM8LqVZr_JGbA&s=10"
+                        alt="Lifebuoy Soap">
+                </div>
+                <div class="details">
+                    <h3>Lifebuoy Soap -100gm Set of 5</h3>
+                    <p class="price">₹106.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="Others">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7gGO-KP-FF6EWn17x28vxw-fljabfHkcs0VwLvDWSgxUzJFpP_DWBrhri&s=10"
+                        alt="Dettol Soap">
+                </div>
+                <div class="details">
+                    <h3>Dettol Germ Protection Soap 45g</h3>
+                    <p class="price">₹10.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="Others">
+                <div class="image">
+                    <img src="https://silverspotindia.com/wp-content/uploads/2023/11/Dettol-Original-Soap-375-gm-5x75-gm-1.jpg"
+                        alt="Dettol Soap 5-Pack">
+                </div>
+                <div class="details">
+                    <h3>Dettol Original Bathing Soap Bar (Buy 4 Get 1 Free)</h3>
+                    <p class="price">₹165.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="Others">
+                <div class="image">
+                    <img src="https://www.starquik.com/cdn/shop/files/SQ102454_FOP_f640dfde-508e-42d7-ad7e-391309df9e11.jpg?v=1776848166"
+                        alt="Surf Excel Bar">
+                </div>
+                <div class="details">
+                    <h3>Surf Excel Detergent Bar 250g</h3>
+                    <p class="price">₹33.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="Others">
+                <div class="image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgpwPK4y_1eW56JryN7sfWzKAd11zUAKsjzchZqes3Br6MBV69ucU8SnCM&s=10"
+                        alt="Lux Soap">
+                </div>
+                <div class="details">
+                    <h3>Lux Radiant Glow Soap</h3>
+                    <p class="price">₹25.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="Others">
+                <div class="image">
+                    <img src="https://www.bbassets.com/media/uploads/p/l/40223449_3-lux-soft-glow-beauty-soap-rose-vitamin-e-for-glowing-skin.jpg"
+                        alt="Lux Rose Soap">
+                </div>
+                <div class="details">
+                    <h3>Lux Soft Glow Soap - Rose & Vitamin E 150 g (Pack of 8)</h3>
+                    <p class="price">₹424.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="Others">
+                <div class="image">
+                    <img src="https://freshlee.in/cdn/shop/files/1065356_2b177799-88a9-417e-96df-1c587efcc7da_grande.jpg?v=1756740335"
+                        alt="Sunsilk Shampoo">
+                </div>
+                <div class="details">
+                    <h3>Sunsilk Thick & long Shampoo 650ml</h3>
+                    <p class="price">₹840.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="Others">
+                <div class="image">
+                    <img src="https://5.imimg.com/data5/ANDROID/Default/2023/5/304994075/FB/IQ/TB/189069567/product-jpeg.jpg"
+                        alt="Hair Shampoo">
+                </div>
+                <div class="details">
+                    <h3>Hair Shampoo, Packaging Size: 90ml</h3>
+                    <p class="price">₹400.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="Others">
+                <div class="image">
+                    <img src="https://img.thecdn.in/392528/SKU-0463_0-1749725100207.png?width=600&format=webp"
+                        alt="Head & Shoulders">
+                </div>
+                <div class="details">
+                    <h3>Head & Shoulders 2 In One Shampoo</h3>
+                    <p class="price">₹99.00</p>
+                </div>
+            </div>
+            <div class="card" data-category="Others">
+                <div class="image">
+                    <img src="https://services.kpnfresh.com/media/v1/products/images/be2c744d-5478-4a06-ace9-c207b8fd1f25/dove-hair-fall-rescue-shampoo.webp?c_type=C1"
+                        alt="Dove Shampoo">
+                </div>
+                <div class="details">
+                    <h3>Dove Hair Fall Rescue Shampoo</h3>
+                    <p class="price">₹178.00</p>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+
+
+    <!--=========== Footer Section ===========-->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>FastMart</h4>
+                    <p>Your premium shopping destination and fresh groceries items and more.</p>
+                    <p style="font-family: cursive;">𒆜𝓐𝓻𝓴𒆜</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="all-items.html">Products</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="#">Track Order</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 FastMart. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- =========================
+         CART DRAWER
+    ========================= -->
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="drawer-overlay" id="drawer-overlay"></div>
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <h2>Shopping Cart</h2>
+                <button id="close-drawer-btn" class="close-btn">✕</button>
+            </div>
+            <div id="cart-items-container" class="drawer-body">
+                <p class="empty-msg">Your cart is empty.</p>
+            </div>
+            <div class="drawer-footer">
+                <h3>Total : <span id="cart-total-price">₹0</span></h3>
+                <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+                <button id="continueShopping" class="checkout-btn2" >Continue Shopping</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        // ============= CLIENT-SIDE ITEM FILTERING =============
+        document.addEventListener("DOMContentLoaded", () => {
+            const filterPills = document.querySelectorAll(".filter-pill");
+            const galleryCards = document.querySelectorAll(".all-items-grid .card");
+            const galleryTitle = document.getElementById("gallery-title");
+
+            filterPills.forEach(pill => {
+                pill.addEventListener("click", () => {
+                    // Update active styling
+                    filterPills.forEach(p => p.classList.remove("active"));
+                    pill.classList.add("active");
+
+                    const selectedFilter = pill.getAttribute("data-filter");
+
+                    // Update gallery main title display nicely
+                    if (selectedFilter === "all") {
+                        galleryTitle.innerText = "All Items Catalog";
+                    } else {
+                        galleryTitle.innerText = `Fresh ${pill.innerText}`;
+                    }
+
+                    // Toggle visibility elements dynamically
+                    galleryCards.forEach(card => {
+                        const itemCategory = card.getAttribute("data-category");
+                        if (selectedFilter === "all" || itemCategory === selectedFilter) {
+                            card.classList.remove("item-hidden");
+                        } else {
+                            card.classList.add("item-hidden");
+                        }
+                    });
+                });
+            });
+        });
+
+        
+    </script>
+</body>
+
+</html>
