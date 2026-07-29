@@ -197,16 +197,17 @@
         /* Responsive Layout Collapse */
         @media (max-width: 768px) {
             .sign-in-container, .sign-up-container {
-                display: none;
+                display: flex;
                 padding: 40px 10px;
             }
             .sign-in-container.active-mobile, .sign-up-container.active-mobile {
-                display: block;
-            }
-            .overlay-container {
                 display: none;
             }
+            .overlay-container {
+                display: grid;
+            }
             .auth-form {
+                disolay:grid;
                 padding: 30px 15px;
             }
             .mobile-toggle-btn {
