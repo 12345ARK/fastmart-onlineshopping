@@ -572,20 +572,6 @@ styleElement.innerHTML = `
     .modal-meta-info p {
         margin-bottom: 8px;
     }
-    .modal-checkout-btn {
-        background: var(--primary-color, #ff6b6b);
-        color: white;
-        border: none;
-        padding: 10px 25px;
-        font-weight: 600;
-        border-radius: 25px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-    .modal-checkout-btn:hover {
-        background: #e05353;
-        transform: translateY(-2px);
-    }
 
     @media (max-width: 576px) {
         .modal-body-layout {
